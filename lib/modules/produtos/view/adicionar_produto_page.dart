@@ -17,6 +17,7 @@ import 'package:sport_bar/widgets/search_widget.dart';
 import 'package:sport_bar/widgets/text/custom_text.dart';
 
 class AdicionarProduto extends StatelessWidget {
+  static const String routeName = '/adicionar-produto';
    AdicionarProduto({super.key});
 
 
@@ -35,7 +36,7 @@ class AdicionarProduto extends StatelessWidget {
   final RxString _descricao = ''.obs;
   final RxString _etiqueta = ''.obs;
   RxBool isLoading = false.obs;
-  Rx<Color> _color = Colors.grey[200]!.obs;
+  final Rx<Color> _color = Colors.grey[200]!.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +228,7 @@ class AdicionarProduto extends StatelessWidget {
                                 estoqueMinimo: _estoqueMinimoController.text
                                 );
                               await produtosController.setProdutoApi(produto: produtosModel);
-                              CustomDialog.sucessDialog(text: "Produto cadastrado com sucesso!",).then((value) => Get.back());
+                              CustomDialog.sucessDialog(text: "Produto cadastrado com sucesso!").then((value) => Get.back());
                             }
                             catch(e){
                               CustomDialog.erroDialog(text: e.toString());

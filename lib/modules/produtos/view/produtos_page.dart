@@ -57,14 +57,12 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
                     //Quantidade de produtos e validação para caso não tenha nenhum produto cadastrado
                     Obx(
-                       () {
-                        if(produtosController.produtos.value.data == null){
-                          return const CustomText(text: " 0 itens cadastrados");
+                       (){
+                          return CustomText(text: "  ${produtosController.produtos.value.data?.length ?? 0} itens cadastrados", 
+                            fontSize: 18, 
+                            color: Colors.grey);
                         }
-                        else{
-                          return CustomText(text: "  ${produtosController.produtos.value.data!.length} itens cadastrados", fontSize: 18, color: Colors.grey);
-                        }
-                      }
+
                     ),
                   ],
                 ),
@@ -86,7 +84,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                         if (text.isEmpty) {
                           produtosController.getProdutos();
                         } else if(text.length > 3) {
-                          // produtosController.getProdutosByName(text);
+                          produtosController.searchProducts(text);
                           print(text);
                         }
                       },

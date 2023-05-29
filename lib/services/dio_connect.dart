@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 class DioConnect extends GetxController{
 
   BaseOptions baseOptions = BaseOptions(
-    baseUrl: "http://10.10.10.64:3000",
+    // baseUrl: "http://10.10.10.64:3000",
+    baseUrl: "http://192.168.1.13:3000",
     connectTimeout: 15000,
     receiveTimeout: 15000,
     headers: {

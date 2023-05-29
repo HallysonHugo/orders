@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sport_bar/widgets/drawer.dart';
 
 
 class ConfigPage extends StatelessWidget {
@@ -9,8 +10,11 @@ class ConfigPage extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
+            const CustomDrawer(),
           Column(
-            
+            children: [
+              
+            ],
           )
         ],
       ),

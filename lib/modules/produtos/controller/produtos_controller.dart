@@ -45,10 +45,10 @@ class ProdutosController extends GetxController{
     } 
   }
 
-  getProdutosByName(String nome)async{
+  searchProducts(String nome)async{
     try{
       produtos.value = CustomResponse.loading();
-      produtos.value = CustomResponse.completed(data: await _produtosRepository.getProdutosByNome(nome));
+      produtos.value = CustomResponse.completed(data: await _produtosRepository.searchProducts(nome));
     }
     catch(e){
       produtos.value = CustomResponse.error(error: CustomException(message: e.toString()));

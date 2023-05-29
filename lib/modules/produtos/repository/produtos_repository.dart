@@ -40,7 +40,7 @@ class ProdutosRepository{
   }
 
   //trazer um produto pela categoria
-  Future<List> getProdutosByCategoria(int id) async{
+  Future<List<ProdutosModel>> getProdutosByCategoria(int id) async{
     try{
       Response response = await _dioConnect.dio.get('${ApiProvider.produtosApi.produtos}/categoria/$id');
       return response.data;
@@ -54,9 +54,11 @@ class ProdutosRepository{
   }
 
   //trazer um produto pelo nome
-  Future<List<ProdutosModel>> getProdutosByNome(String nome) async{
+  Future<List<ProdutosModel>> searchProducts(String nome) async{
     try{
-      Response response = await _dioConnect.dio.get('${ApiProvider.produtosApi.produtos}/nome/$nome');
+      Response response = await _dioConnect.dio.get(ApiProvider.produtosApi.search, queryParameters: {
+        'search': nome
+      });
       return response.data.map<ProdutosModel>((json) => ProdutosModel.fromJson(json)).toList();
     }
     on DioError catch(error){

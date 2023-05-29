@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sport_bar/modules/produtos/controller/produtos_controller.dart';
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
+import 'package:sport_bar/services/errors/exeption.dart';
 import 'package:sport_bar/services/response.dart';
 import 'package:sport_bar/utils/color_formatter_utils.dart';
 import 'package:sport_bar/utils/decoration_utils.dart';
@@ -84,13 +85,86 @@ class ProductsBody extends StatelessWidget {
 
   _gridView(){
     return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 5
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 1.5
           ),
           itemCount: products.value.data!.length,
-          itemBuilder: (context, index) => Container(
-            color: Colors.red,
-          ),
+          itemBuilder: (context, index){
+            return Container(
+                  decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  margin: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      ImageProductCard(
+                        height: 200,
+                        width: 200,
+                        color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
+                        etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
+                        products.value.data![index].nomeEtiqueta!.obs,
+                        produto: products.value.data![index],
+                        image: products.value.data![index].imagem.obs,
+                      ),
+                      DecorationUtils.DEFAULT_HSEPARATOR,
+                      DecorationUtils.DEFAULT_HSEPARATOR,
+                      CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
+                      CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,),
+                      CustomText(
+                        text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
+                        color: Colors.black87, 
+                        fontSize: 18,),
+                      CustomText(
+                        text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), 
+                        color: Colors.grey, 
+                        fontSize: 18,),
+                      if(canDelete)...[
+                        CustomIconButton(
+                          isLoading: false.obs, 
+                          icon: Icons.delete, 
+                          color: Colors.red,
+                          onTap: ()async{
+                            try{
+                              await CustomDialog.questionDialog(
+                                text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
+                                onConfirm: ()async{
+                                  try{
+                                    await _produtosController.deleteProduto(products.value.data![index].id!);
+                                    Get.back();
+                                    CustomDialog.sucessDialog(text: "Produto deletado com sucesso").then((value) => Get.back());
+                                    _produtosController.getProdutos();
+                                  }
+                                  catch(e){
+                                    throw CustomException(message: e.toString());
+                                  }
+                                }
+                              );
+                            }
+                            catch(e){
+                              await CustomDialog.erroDialog(text: e.toString());
+                            }
+                          }
+                        ),
+                        DecorationUtils.DEFAULT_HSEPARATOR,
+                        DecorationUtils.DEFAULT_HSEPARATOR, 
+                      ]
+                      // ListTile(
+                      //   title: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
+                      //   subtitle: CustomText(text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), color: Colors.grey, fontSize: 18,),
+                      //   leading: ImageProductCard(
+                      //     color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
+                      //     etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
+                      //     products.value.data![index].nomeEtiqueta!.obs,
+                      //     produto: products.value.data![index],
+                      //     image: products.value.data![index].imagem.obs,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                );
+          }
         );
   }
   _listView(BuildContext context){
@@ -138,8 +212,20 @@ class ProductsBody extends StatelessWidget {
                           color: Colors.red,
                           onTap: ()async{
                             try{
-                              await _produtosController.deleteProduto(products.value.data![index].id!);
-                              _produtosController.getProdutos();
+                              await CustomDialog.questionDialog(
+                                text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
+                                onConfirm: ()async{
+                                  try{
+                                    await _produtosController.deleteProduto(products.value.data![index].id!);
+                                    Get.back();
+                                    CustomDialog.sucessDialog(text: "Produto deletado com sucesso").then((value) => Get.back());
+                                    _produtosController.getProdutos();
+                                  }
+                                  catch(e){
+                                    throw CustomException(message: e.toString());
+                                  }
+                                }
+                              );
                             }
                             catch(e){
                               await CustomDialog.erroDialog(text: e.toString());

@@ -18,8 +18,7 @@ class ImageProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-       () {
+    return Obx(() {
         return Container(
           decoration: BoxDecoration(
             color:  image.isEmpty ? setColor() : null,
@@ -28,8 +27,7 @@ class ImageProductCard extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-             Obx(
-               () {
+             Obx(() {
                 if(image.isEmpty){
                   return Container(
                     height: height,
