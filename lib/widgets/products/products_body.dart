@@ -19,7 +19,9 @@ class ProductsBody extends StatelessWidget {
   final Rx<CustomResponse<List<ProdutosModel>>> products;
   final RxBool listView;
   final bool canDelete;
-  ProductsBody({super.key, required this.products, required this.listView, this.canDelete = false});
+  final bool isVenda;
+  final void Function()? onTap;
+  ProductsBody({super.key, required this.products, required this.listView, this.canDelete = false, this.onTap, this.isVenda = false});
 
   final ScrollController _scrollController = ScrollController();
   final ProdutosController _produtosController = Get.find();
@@ -91,79 +93,82 @@ class ProductsBody extends StatelessWidget {
           ),
           itemCount: products.value.data!.length,
           itemBuilder: (context, index){
-            return Container(
-                  decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  margin: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      ImageProductCard(
-                        height: 200,
-                        width: 200,
-                        color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
-                        etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
-                        products.value.data![index].nomeEtiqueta!.obs,
-                        produto: products.value.data![index],
-                        image: products.value.data![index].imagem.obs,
-                      ),
-                      DecorationUtils.DEFAULT_HSEPARATOR,
-                      DecorationUtils.DEFAULT_HSEPARATOR,
-                      CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
-                      CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,),
-                      CustomText(
-                        text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
-                        color: Colors.black87, 
-                        fontSize: 18,),
-                      CustomText(
-                        text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), 
-                        color: Colors.grey, 
-                        fontSize: 18,),
-                      if(canDelete)...[
-                        CustomIconButton(
-                          isLoading: false.obs, 
-                          icon: Icons.delete, 
-                          color: Colors.red,
-                          onTap: ()async{
-                            try{
-                              await CustomDialog.questionDialog(
-                                text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
-                                onConfirm: ()async{
-                                  try{
-                                    await _produtosController.deleteProduto(products.value.data![index].id!);
-                                    Get.back();
-                                    CustomDialog.sucessDialog(text: "Produto deletado com sucesso").then((value) => Get.back());
-                                    _produtosController.getProdutos();
-                                  }
-                                  catch(e){
-                                    throw CustomException(message: e.toString());
-                                  }
-                                }
-                              );
-                            }
-                            catch(e){
-                              await CustomDialog.erroDialog(text: e.toString());
-                            }
-                          }
+            return InkWell(
+              onTap: onTap,
+              child: Container(
+                    decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ImageProductCard(
+                            color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
+                            etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
+                            products.value.data![index].nomeEtiqueta!.obs,
+                            produto: products.value.data![index],
+                            image: products.value.data![index].imagem.obs,
+                          ),
                         ),
                         DecorationUtils.DEFAULT_HSEPARATOR,
-                        DecorationUtils.DEFAULT_HSEPARATOR, 
-                      ]
-                      // ListTile(
-                      //   title: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
-                      //   subtitle: CustomText(text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), color: Colors.grey, fontSize: 18,),
-                      //   leading: ImageProductCard(
-                      //     color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
-                      //     etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
-                      //     products.value.data![index].nomeEtiqueta!.obs,
-                      //     produto: products.value.data![index],
-                      //     image: products.value.data![index].imagem.obs,
-                      //   ),
-                      // ),
-                    ],
+                        DecorationUtils.DEFAULT_HSEPARATOR,
+                        CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
+                        CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,),
+                        CustomText(
+                          text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
+                          color: Colors.black87, 
+                          fontSize: 18,),
+                        CustomText(
+                          text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), 
+                          color: Colors.grey, 
+                          fontSize: 18,),
+                        if(canDelete)...[
+                          CustomIconButton(
+                            isLoading: false.obs, 
+                            icon: Icons.delete, 
+                            color: Colors.red,
+                            onTap: ()async{
+                              try{
+                                await CustomDialog.questionDialog(
+                                  text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
+                                  onConfirm: ()async{
+                                    try{
+                                      await _produtosController.deleteProduto(products.value.data![index].id!);
+                                      Get.back();
+                                      CustomDialog.sucessDialog(text: "Produto deletado com sucesso").then((value) => Get.back());
+                                      _produtosController.getProdutos();
+                                    }
+                                    catch(e){
+                                      throw CustomException(message: e.toString());
+                                    }
+                                  }
+                                );
+                              }
+                              catch(e){
+                                await CustomDialog.erroDialog(text: e.toString());
+                              }
+                            }
+                          ),
+                          DecorationUtils.DEFAULT_HSEPARATOR,
+                          DecorationUtils.DEFAULT_HSEPARATOR, 
+                        ]
+                        // ListTile(
+                        //   title: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
+                        //   subtitle: CustomText(text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), color: Colors.grey, fontSize: 18,),
+                        //   leading: ImageProductCard(
+                        //     color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
+                        //     etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
+                        //     products.value.data![index].nomeEtiqueta!.obs,
+                        //     produto: products.value.data![index],
+                        //     image: products.value.data![index].imagem.obs,
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
-                );
+            );
           }
         );
   }
@@ -176,77 +181,80 @@ class ProductsBody extends StatelessWidget {
               controller: _scrollController,
               itemCount: products.value.data!.length,
               itemBuilder: (context, index){
-                return Container(
-                  decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  margin: const EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      ImageProductCard(
-                        height: 200,
-                        width: 200,
-                        color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
-                        etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
-                        products.value.data![index].nomeEtiqueta!.obs,
-                        produto: products.value.data![index],
-                        image: products.value.data![index].imagem.obs,
-                      ),
-                      DecorationUtils.DEFAULT_HSEPARATOR,
-                      DecorationUtils.DEFAULT_HSEPARATOR,
-                      Expanded(child: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,)),
-                      Expanded(child: CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,)),
-                      Expanded(child: CustomText(
-                        text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
-                        color: Colors.black87, 
-                        fontSize: 18,)),
-                      Expanded(child: CustomText(
-                        text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), 
-                        color: Colors.grey, 
-                        fontSize: 18,)),
-                      if(canDelete)...[
-                        CustomIconButton(
-                          isLoading: false.obs, 
-                          icon: Icons.delete, 
-                          color: Colors.red,
-                          onTap: ()async{
-                            try{
-                              await CustomDialog.questionDialog(
-                                text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
-                                onConfirm: ()async{
-                                  try{
-                                    await _produtosController.deleteProduto(products.value.data![index].id!);
-                                    Get.back();
-                                    CustomDialog.sucessDialog(text: "Produto deletado com sucesso").then((value) => Get.back());
-                                    _produtosController.getProdutos();
-                                  }
-                                  catch(e){
-                                    throw CustomException(message: e.toString());
-                                  }
-                                }
-                              );
-                            }
-                            catch(e){
-                              await CustomDialog.erroDialog(text: e.toString());
-                            }
-                          }
+                return InkWell(
+                  onTap: onTap,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        ImageProductCard(
+                          height: 200,
+                          width: 200,
+                          color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
+                          etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
+                          products.value.data![index].nomeEtiqueta!.obs,
+                          produto: products.value.data![index],
+                          image: products.value.data![index].imagem.obs,
                         ),
                         DecorationUtils.DEFAULT_HSEPARATOR,
-                        DecorationUtils.DEFAULT_HSEPARATOR, 
-                      ]
-                      // ListTile(
-                      //   title: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
-                      //   subtitle: CustomText(text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), color: Colors.grey, fontSize: 18,),
-                      //   leading: ImageProductCard(
-                      //     color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
-                      //     etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
-                      //     products.value.data![index].nomeEtiqueta!.obs,
-                      //     produto: products.value.data![index],
-                      //     image: products.value.data![index].imagem.obs,
-                      //   ),
-                      // ),
-                    ],
+                        DecorationUtils.DEFAULT_HSEPARATOR,
+                        Expanded(child: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,)),
+                        Expanded(child: CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,)),
+                        Expanded(child: CustomText(
+                          text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
+                          color: Colors.black87, 
+                          fontSize: 18,)),
+                        Expanded(child: CustomText(
+                          text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), 
+                          color: Colors.grey, 
+                          fontSize: 18,)),
+                        if(canDelete)...[
+                          CustomIconButton(
+                            isLoading: false.obs, 
+                            icon: Icons.delete, 
+                            color: Colors.red,
+                            onTap: ()async{
+                              try{
+                                await CustomDialog.questionDialog(
+                                  text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
+                                  onConfirm: ()async{
+                                    try{
+                                      await _produtosController.deleteProduto(products.value.data![index].id!);
+                                      Get.back();
+                                      CustomDialog.sucessDialog(text: "Produto deletado com sucesso").then((value) => Get.back());
+                                      _produtosController.getProdutos();
+                                    }
+                                    catch(e){
+                                      throw CustomException(message: e.toString());
+                                    }
+                                  }
+                                );
+                              }
+                              catch(e){
+                                await CustomDialog.erroDialog(text: e.toString());
+                              }
+                            }
+                          ),
+                          DecorationUtils.DEFAULT_HSEPARATOR,
+                          DecorationUtils.DEFAULT_HSEPARATOR, 
+                        ]
+                        // ListTile(
+                        //   title: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
+                        //   subtitle: CustomText(text: DoubleFormatterUtil.doubleToString(value:  products.value.data![index].preco), color: Colors.grey, fontSize: 18,),
+                        //   leading: ImageProductCard(
+                        //     color: ColorFormatterUtils.formatStringToColor(color: products.value.data![index].color).obs,
+                        //     etiqueta: products.value.data![index].nomeEtiqueta == null ? products.value.data![index].descricao.obs :
+                        //     products.value.data![index].nomeEtiqueta!.obs,
+                        //     produto: products.value.data![index],
+                        //     image: products.value.data![index].imagem.obs,
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 );
               }

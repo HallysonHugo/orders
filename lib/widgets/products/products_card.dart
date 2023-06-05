@@ -29,7 +29,7 @@ class ImageProductCard extends StatelessWidget {
             children: [
              Obx(() {
                 if(image.isEmpty){
-                  return Container(
+                  return SizedBox(
                     height: height,
                     width: width,
                     child: Center(
@@ -59,10 +59,6 @@ class ImageProductCard extends StatelessWidget {
     );
   }
   setColor(){
-    if(color != null){
-      return color!.value;
-    }else{
-      return Colors.grey[200];
-    }
+    return color?.value ?? Colors.grey[300];
   }
 }

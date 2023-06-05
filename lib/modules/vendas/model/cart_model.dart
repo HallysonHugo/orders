@@ -3,7 +3,7 @@ import 'package:sport_bar/modules/vendas/model/itvendas_model.dart';
 class CartModel{
   int? idCarrinho;
   List<ItVendas> produtos = [];
-  double get total => produtos.map((e) => e.total).reduce((value, element) => value + element);
-  double get quantidade => produtos.map((e) => e.quantidade).reduce((value, element) => value + element);
-  double get desconto => produtos.map((e) => e.desconto).reduce((value, element) => value + element);
+  double get total => produtos.fold(0, (previousValue, element) => previousValue + element.total);
+  double get quantidade => produtos.fold(0, (previousValue, element) => previousValue + element.quantidade);
+  double get desconto => produtos.fold(0, (previousValue, element) => previousValue + element.desconto);
 }

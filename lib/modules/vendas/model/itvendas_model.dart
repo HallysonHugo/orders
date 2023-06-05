@@ -4,17 +4,9 @@ class ItVendas{
   ProdutosModel produtosModel = ProdutosModel();
   double quantidade = 0.0;
   double desconto = 0.0;
-  double _precoVenda = 0.0;
-  set precoVenda(double? preco){
-    if(preco != null){
-      _precoVenda = preco;
-    }
-    else{
-      _precoVenda = produtosModel.precoVenda;
-    }
-  }
-  double get total => (_precoVenda - desconto) * quantidade;
-
+  double get precoVenda => produtosModel.precoVenda;
+  
+  double get total => (precoVenda - desconto) * quantidade;
 
   ItVendas();
   ItVendas.fromJson(Map<String, dynamic> json){
@@ -23,12 +15,12 @@ class ItVendas{
     desconto = json['desconto'];
   }
 
-  toJson(){
+    toJson(){
     return {
       'id': produtosModel.id,
       'quantidade': quantidade,
       'desconto': desconto,
-      "precoVenda": _precoVenda,
+      "precoVenda": precoVenda,
       'total': total,
     };
   }
