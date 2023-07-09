@@ -20,7 +20,7 @@ class ProductsBody extends StatelessWidget {
   final RxBool listView;
   final bool canDelete;
   final bool isVenda;
-  final void Function()? onTap;
+  final void Function(ProdutosModel produto)? onTap;
   ProductsBody({super.key, required this.products, required this.listView, this.canDelete = false, this.onTap, this.isVenda = false});
 
   final ScrollController _scrollController = ScrollController();
@@ -94,7 +94,9 @@ class ProductsBody extends StatelessWidget {
           itemCount: products.value.data!.length,
           itemBuilder: (context, index){
             return InkWell(
-              onTap: onTap,
+              onTap: onTap == null ? null : (){
+                onTap!(products.value.data?[index]?? ProdutosModel());
+              },
               child: Container(
                     decoration: const BoxDecoration(
                     color: Colors.white,
@@ -182,7 +184,9 @@ class ProductsBody extends StatelessWidget {
               itemCount: products.value.data!.length,
               itemBuilder: (context, index){
                 return InkWell(
-                  onTap: onTap,
+                  onTap: onTap == null ? null : (){
+                    onTap!(products.value.data?[index]?? ProdutosModel());
+                  },
                   child: Container(
                     decoration: const BoxDecoration(
                     color: Colors.white,

@@ -25,6 +25,20 @@ class ProdutosRepository{
     }
   }
 
+
+  Future<void> updateProdutos({required ProdutosModel produtosModel})async{
+    try{
+      Response response = await _dioConnect.dio.put(ApiProvider.produtosApi.produtos, data: produtosModel.toJson());
+      return response.data;
+    }
+    on DioError catch(error){
+      throw CustomException.fromDioError(error);
+    }
+    catch(e){
+      throw CustomException(message: e.toString());
+    }
+  }
+
   //trazer todos os produtos
   Future<List<ProdutosModel>>getProdutos() async{
     try{

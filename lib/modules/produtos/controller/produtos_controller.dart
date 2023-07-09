@@ -84,4 +84,13 @@ class ProdutosController extends GetxController{
       throw CustomException(message: e.toString());
     } 
   }
+
+  Future<void> updateProdutoApi({required ProdutosModel produto})async{
+    try{
+      await _produtosRepository.updateProdutos(produtosModel: produto);
+    }
+    catch(e){
+      throw CustomException(message: e.toString());
+    } 
+  }
 }

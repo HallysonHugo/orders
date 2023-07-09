@@ -10,7 +10,7 @@ class ColorFormatterUtils{
 
   static Color formatStringToColor({String? color}) {
     if(color == null) {
-      return Colors.white;
+      return Colors.grey[200]!;
     }
     return Color(int.parse(color.substring(1, 7), radix: 16) + 0xFF000000);
   }

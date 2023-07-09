@@ -13,7 +13,7 @@ class ProdutosModel{
   }
   String unidades = "";
   double estoque = 0.0;
-  double estoqueMinimo = 0.0;
+  double? estoqueMinimo;
   bool promocao = false;
   double precoPromocao = 0.0;
   CategoriasModel categoria = CategoriasModel();
@@ -22,6 +22,15 @@ class ProdutosModel{
   bool isFavorite = false;
 
   
+
+  //TODO: pensar em um modo de controlar o desperdicio
+
+
+  //TODO: Pagina igual de vendas para ir selecionando o item que foi desperdiçado "Sugestao Joao"
+
+  //TODO: avisar caso o estoque tive zerado e avisar apenas quando atingir o estoque minimo
+
+  //TODO: Controle de forma de pagamento, opcao de informar a quantidade paga pois podem rachar o valor total da venda
 
 
   ProdutosModel();
@@ -49,6 +58,7 @@ class ProdutosModel{
 
   toJson(){
     return {
+      'id': id,
       'descricao': descricao,
       'nomeEtiqueta': nomeEtiqueta,
       'preco': preco,

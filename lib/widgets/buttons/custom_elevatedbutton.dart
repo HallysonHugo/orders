@@ -5,9 +5,10 @@ import 'package:sport_bar/widgets/text/custom_text.dart';
 class CustomElevatedButton extends StatelessWidget {
   final String text;
   final Color? color;
+  final bool isLoading;
   final Function()? onPressed; 
   
-  const CustomElevatedButton({super.key, required this.text, this.color, this.onPressed});
+  const CustomElevatedButton({super.key, required this.text, this.color, this.onPressed, this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {

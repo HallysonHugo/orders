@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/produtos/controller/produtos_controller.dart';
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
+import 'package:sport_bar/utils/color_formatter_utils.dart';
 import 'package:sport_bar/utils/decoration_utils.dart';
 import 'package:sport_bar/utils/size_util.dart';
 import 'package:sport_bar/widgets/buttons/custom_elevatedbutton.dart';
@@ -16,27 +17,61 @@ import 'package:sport_bar/widgets/products/products_card.dart';
 import 'package:sport_bar/widgets/search_widget.dart';
 import 'package:sport_bar/widgets/text/custom_text.dart';
 
-class AdicionarProduto extends StatelessWidget {
+class AdicionarProduto extends StatefulWidget {
   static const String routeName = '/adicionar-produto';
-   AdicionarProduto({super.key});
+  final ProdutosModel? productModel;
+  const AdicionarProduto({super.key, this.productModel});
 
+  @override
+  State<AdicionarProduto> createState() => _AdicionarProdutoState();
+}
 
+class _AdicionarProdutoState extends State<AdicionarProduto> {
   ProdutosModel produtosModel = ProdutosModel();
+
   final ScrollController _scrollController = ScrollController();
 
   final TextEditingController _descricaoProdutoController = TextEditingController();
+
   final TextEditingController _precoProdutoController = TextEditingController();
+
   final TextEditingController _etiquetaProdutoController = TextEditingController();
+
   final TextEditingController _estoqueProdutoController = TextEditingController();
+
   final TextEditingController _estoqueMinimoController = TextEditingController();
+
   final ProdutosController produtosController = Get.find<ProdutosController>();
 
   final RxString _imagePath = ''.obs;
+
   final RxString _preco = ''.obs;
+
   final RxString _descricao = ''.obs;
+
   final RxString _etiqueta = ''.obs;
+
   RxBool isLoading = false.obs;
+
   final Rx<Color> _color = Colors.grey[200]!.obs;
+
+  @override
+  void initState() {
+    if(widget.productModel != null){
+      produtosModel = widget.productModel!;
+      _descricaoProdutoController.text = produtosModel.descricao;
+      _precoProdutoController.text = produtosModel.preco.toString();
+      _etiquetaProdutoController.text = produtosModel.nomeEtiqueta ?? "";
+      _estoqueProdutoController.text = produtosModel.estoque.toString();
+      _estoqueMinimoController.text = produtosModel.estoqueMinimo?.toString() ?? "";
+      _imagePath.value = produtosModel.imagem ;
+      _preco.value = produtosModel.preco.toString();
+      _descricao.value = produtosModel.descricao ?? "";
+      _etiqueta.value = produtosModel.nomeEtiqueta ?? "";
+      _color.value = ColorFormatterUtils.formatStringToColor(color: produtosModel.color);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +113,7 @@ class AdicionarProduto extends StatelessWidget {
                         DecorationUtils.DEFAULT_VSEPARATOR,
                         Card(
                           elevation: 0,
-                          child: Container(
+                          child: SizedBox(
                             width: DeviceSize.getDeviceWidth(context) * 0.5,
                             child: Column(
                               children: [
@@ -89,13 +124,11 @@ class AdicionarProduto extends StatelessWidget {
                                 image: _imagePath, 
                                 color: _color,
                                 etiqueta: _etiqueta),
-                                Obx(
-                                   () {
+                                Obx(() {
                                     return CustomText(text: "Descrição: ${_descricao.value}", color: Colors.black87,fontSize: 16,);
                                   }
                                 ),
-                                Obx(
-                                   () {
+                                Obx(() {
                                     return CustomText(text: "Preço: ${_preco.value}", color: Colors.black87,fontSize: 16,);
                                   }
                                 ),
@@ -113,13 +146,14 @@ class AdicionarProduto extends StatelessWidget {
                                         try{
                                           isLoading.value = true;
                                           PlatformFile image = await produtosController.pickProductImage();
-                                          _imagePath.value = image.path ?? "";
-                                          isLoading.value = false;
+                                          _imagePath.value = image.path ?? ""; 
                                         }
                                         catch(e){
-                                          isLoading.value = false;
                                           produtosModel.imagem = "";
                                           print(e);
+                                        }
+                                        finally{
+                                          isLoading.value = false;
                                         }
                                       },
                                     ),
@@ -216,8 +250,7 @@ class AdicionarProduto extends StatelessWidget {
                         CustomElevatedButton(
                           onPressed: ()async{
                             try{
-                              produtosModel = 
-                              produtosController.setProduto(
+                              produtosModel = produtosController.setProduto(
                                 descricao: _descricaoProdutoController.text, 
                                 nomeEtiqueta: _etiquetaProdutoController.text, 
                                 preco: _precoProdutoController.text, 
@@ -227,6 +260,12 @@ class AdicionarProduto extends StatelessWidget {
                                 estoque : _estoqueProdutoController.text,
                                 estoqueMinimo: _estoqueMinimoController.text
                                 );
+                              if(widget.productModel != null){
+                                produtosModel.id = widget.productModel!.id;
+                                await produtosController.updateProdutoApi(produto: produtosModel);
+                                CustomDialog.sucessDialog(text: "Produto atualizado com sucesso!").then((value) => Get.back());
+                                return;
+                              }
                               await produtosController.setProdutoApi(produto: produtosModel);
                               CustomDialog.sucessDialog(text: "Produto cadastrado com sucesso!").then((value) => Get.back());
                             }

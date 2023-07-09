@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sport_bar/modules/categorias/view/category_page.dart';
 import 'package:sport_bar/modules/homepage/view/homepage.dart';
 import 'package:sport_bar/modules/produtos/view/produtos_page.dart';
 import 'package:sport_bar/modules/relatorios/view/relatorios_page.dart';
@@ -7,6 +8,8 @@ import 'package:sport_bar/modules/vendas/view/vendas_page.dart';
 import 'package:sport_bar/utils/decoration_utils.dart';
 import 'package:sport_bar/utils/size_util.dart';
 import 'package:sport_bar/widgets/buttons/circled_button.dart';
+
+import '../modules/configuracoes/view/config_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -45,10 +48,21 @@ class CustomDrawer extends StatelessWidget {
                 }),
                 DecorationUtils.DEFAULT_VSEPARATOR,
                 DecorationUtils.DEFAULT_VSEPARATOR,
-                CustomCircledButton(icon: Icons.settings, text: "Configuracoes", onTap: (){print("Vendas");}),
+                 CustomCircledButton(icon: Icons.category, text: "Categorias", onTap: (){
+                  Get.offAll(()=> const CategoryPage(),transition: Transition.noTransition);
+                }),
+                DecorationUtils.DEFAULT_VSEPARATOR,
+                DecorationUtils.DEFAULT_VSEPARATOR,
+                 CustomCircledButton(icon: Icons.payment, text: "Pagamento", onTap: (){
+                  Get.offAll(()=> const ConfigPage(),transition: Transition.noTransition);
+                }),
+                 DecorationUtils.DEFAULT_VSEPARATOR,
+                DecorationUtils.DEFAULT_VSEPARATOR,
+                CustomCircledButton(icon: Icons.settings, text: "Configuracoes", onTap: (){
+                  Get.offAll(()=> const ConfigPage(),transition: Transition.noTransition);
+                }),
               ],
             ),
       );
   }
-  
 }

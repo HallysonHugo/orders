@@ -148,7 +148,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                     CustomElevatedButton(
                       text: "Adicionar produto",
                       onPressed: (){
-                        Get.to(()=>AdicionarProduto())!.then((value) => produtosController.getProdutos());
+                        Get.to(()=>const AdicionarProduto())?.then((value) => produtosController.getProdutos());
                       },
                     ),
                     DecorationUtils.DEFAULT_HSEPARATOR,
@@ -193,6 +193,9 @@ class _ProdutosPageState extends State<ProdutosPage> {
                   products: produtosController.produtos, 
                   listView: true.obs, 
                   canDelete: true,
+                  onTap: (produto){
+                    Get.to(()=>AdicionarProduto(productModel: produto))?.then((value) => produtosController.getProdutos());
+                  },
                   ),
               ],
             ),

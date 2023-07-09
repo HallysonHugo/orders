@@ -1,6 +1,7 @@
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
 
 class ItVendas{
+  int? id;
   ProdutosModel produtosModel = ProdutosModel();
   double quantidade = 0.0;
   double desconto = 0.0;

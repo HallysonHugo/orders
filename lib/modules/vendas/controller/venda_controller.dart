@@ -9,7 +9,24 @@ class VendasController extends GetxController {
   RxList<ItVendas> itensVenda = <ItVendas>[].obs;
 
   void addItensVenda({required ItVendas itVendas}){
-    itensVenda.add(itVendas);
+    ItVendas? item = itensVenda.firstWhereOrNull((element) => element.produtosModel.id == itVendas.produtosModel.id);
+    if(item == null){
+      itensVenda.add(itVendas);
+      itensVenda.refresh();
+      return;
+    }
+    item.quantidade ++;
+    itensVenda.refresh();
+  }
+
+  void removeItemVenda({required ItVendas itVendas}){
+    if(itVendas.quantidade > 1){
+      itVendas.quantidade --;
+      itensVenda.refresh();
+      return;
+    }
+    itensVenda.remove(itVendas);
+    itensVenda.refresh();
   }
 
   Future<void> setVenda() async {

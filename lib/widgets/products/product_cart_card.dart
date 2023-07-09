@@ -11,7 +11,9 @@ class ProductCartCard extends StatelessWidget {
   final ItVendas product;
   final double? height;
   final double? width;
-  const ProductCartCard({super.key, required this.product, this.height, this.width});
+  final void Function()? onAdd;
+  final void Function()? onRemove;
+  const ProductCartCard({super.key, required this.product, this.height, this.width, this.onAdd, this.onRemove});
   
 
   
@@ -40,7 +42,19 @@ class ProductCartCard extends StatelessWidget {
               CustomText(text: "Quantidade: ${product.quantidade.toBrformatted()}", color: Colors.grey),
               CustomText(text: "Total: ${product.total.toCurrency()}", color: Colors.grey),
             ],
+            
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                onPressed: onRemove, 
+                icon: const Icon(Icons.remove, color: Colors.red,)),
+              IconButton(
+                onPressed: onAdd, 
+                icon: const Icon(Icons.add, color: Colors.green,))
+            ],
+          )
         ],
       ),
     );

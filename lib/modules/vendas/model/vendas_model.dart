@@ -1,5 +1,6 @@
-import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
 import 'package:sport_bar/modules/vendas/model/cart_model.dart';
+import 'package:sport_bar/modules/vendas/model/ficha_model.dart';
+import 'package:sport_bar/modules/vendas/model/forma_pagamento_venda_model.dart';
 
 class VendasModel{
   int? codigo;
@@ -8,6 +9,9 @@ class VendasModel{
   String cliente = "";
   String vendedor = "";
   CartModel carrinho = CartModel();
+  List<FichaModel> fichas = [];
+  List<FormaPagamentoVendaModel> formasPagamento = [];
+  double valorPago = 0.0;
 
   VendasModel();
 
@@ -28,7 +32,7 @@ class VendasModel{
       'vendedor': vendedor,
       'descontoTotal': carrinho.desconto,
       'valorTotal': carrinho.total,
-      'produtos': carrinho.produtos.map((e) => e.toJson())  .toList(),
+      'produtos': carrinho.produtos.map((e) => e.toJson()).toList(),
     };
   }
 }

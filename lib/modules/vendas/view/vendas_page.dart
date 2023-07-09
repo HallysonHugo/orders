@@ -4,6 +4,7 @@ import 'package:sport_bar/modules/produtos/controller/produtos_controller.dart';
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
 import 'package:sport_bar/modules/vendas/controller/venda_controller.dart';
 import 'package:sport_bar/modules/vendas/model/itvendas_model.dart';
+import 'package:sport_bar/services/errors/exeption.dart';
 import 'package:sport_bar/utils/extensions.dart';
 import 'package:sport_bar/utils/size_util.dart';
 import 'package:sport_bar/widgets/body/products_body_new.dart';
@@ -12,9 +13,6 @@ import 'package:sport_bar/widgets/dialogs/custom_dialog.dart';
 import 'package:sport_bar/widgets/drawer.dart';
 import 'package:sport_bar/widgets/products/product_cart_card.dart';
 import 'package:sport_bar/widgets/products/grid_product_card.dart';
-import 'package:sport_bar/widgets/products/list_product_card.dart';
-import 'package:sport_bar/widgets/products/products_body.dart';
-import 'package:sport_bar/widgets/products/products_card.dart';
 import 'package:sport_bar/widgets/text/custom_text.dart';
 
 class VendasPage extends StatefulWidget {
@@ -58,7 +56,10 @@ class _VendasPageState extends State<VendasPage> {
                       return GridProductCard(
                         product: produto,
                         onTap: (){
-                          _vendasController.addItensVenda(itVendas: ItVendas()..produtosModel = produto..quantidade = 1);
+                          ItVendas itVendas = ItVendas();
+                          itVendas.quantidade = 1;
+                          itVendas.produtosModel = produto;
+                          _vendasController.addItensVenda(itVendas: itVendas);
                         },
                       );
                     }
@@ -81,7 +82,14 @@ class _VendasPageState extends State<VendasPage> {
                           itemCount: _vendasController.itensVenda.length,
                           controller: _scrollController,
                           itemBuilder: ((context, index) {
+                            ItVendas itVendas = _vendasController.itensVenda[index];
                             return ProductCartCard(
+                              onAdd: (){
+                                _vendasController.addItensVenda(itVendas: itVendas);
+                              },
+                              onRemove: (){
+                                _vendasController.removeItemVenda(itVendas: itVendas);
+                              },
                               product: _vendasController.itensVenda[index],
                             );
                           }),
@@ -99,8 +107,12 @@ class _VendasPageState extends State<VendasPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomElevatedButton(
-                  text: 'Finalizar', onPressed: ()async{
+                  text: 'Finalizar',
+                  onPressed: ()async{
                     try{
+                      if(_vendasController.itensVenda.isEmpty){
+                        throw CustomException(message: "Não é possivel fechar a venda sem produtos");
+                      }
                       await _vendasController.setVenda();
                     }
                     catch(e){
