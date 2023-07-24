@@ -36,7 +36,7 @@ class ProductsBody extends StatelessWidget {
       case Status.loading:
         return const CircularProgressIndicator();
       case Status.completed:
-        if(products.value.data!.isEmpty){
+        if(products.value.data?.isEmpty ?? true){
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
