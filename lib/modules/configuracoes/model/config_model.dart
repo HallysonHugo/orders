@@ -5,9 +5,12 @@ part 'config_model.g.dart';
 
 @collection
 class ConfigModel{
+
   @Index(unique: true, replace: true)
   Id id = Isar.autoIncrement;
+  
   String baseUrl = '';
+  
   @enumerated
   ConnectionType connectionType = ConnectionType.http;
 
