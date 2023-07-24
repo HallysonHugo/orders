@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sport_bar/modules/vendas/model/cart_model.dart';
 import 'package:sport_bar/modules/vendas/model/itvendas_model.dart';
 import 'package:sport_bar/utils/color_formatter_utils.dart';
 import 'package:sport_bar/utils/extensions.dart';

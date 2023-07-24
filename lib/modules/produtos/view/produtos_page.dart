@@ -12,7 +12,7 @@ import 'package:sport_bar/widgets/search_widget.dart';
 import 'package:sport_bar/widgets/text/custom_text.dart';
 
 class ProdutosPage extends StatefulWidget {
-  ProdutosPage({super.key});
+ const ProdutosPage({super.key});
 
   @override
   State<ProdutosPage> createState() => _ProdutosPageState();
@@ -35,7 +35,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
       body: Row(
         children: [
           const CustomDrawer(),
-          Container(
+          SizedBox(
             height: DeviceSize.getDeviceHeight(context),
             width: DeviceSize.getDeviceWidth(context) * 0.94,
             child: Column(
@@ -85,7 +85,6 @@ class _ProdutosPageState extends State<ProdutosPage> {
                           produtosController.getProdutos();
                         } else if(text.length > 3) {
                           produtosController.searchProducts(text);
-                          print(text);
                         }
                       },
                       suffixIcon: const Icon(Icons.search),
@@ -155,8 +154,8 @@ class _ProdutosPageState extends State<ProdutosPage> {
                     DecorationUtils.DEFAULT_HSEPARATOR,
                   ],
                 ),
-                Row(
-                  children: const [
+               const Row(
+                  children: [
                   DecorationUtils.DEFAULT_HSEPARATOR,
                   DecorationUtils.DEFAULT_HSEPARATOR,
                   DecorationUtils.DEFAULT_HSEPARATOR,

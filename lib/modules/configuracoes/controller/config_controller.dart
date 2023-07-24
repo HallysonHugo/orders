@@ -1,7 +1,9 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/configuracoes/model/config_model.dart';
 import 'package:sport_bar/modules/configuracoes/repository/config_repository.dart';
 import 'package:sport_bar/services/dio_connect.dart';
+import 'package:sport_bar/services/errors/exeption.dart';
 
 class ConfigController extends GetxController{
 
@@ -24,13 +26,23 @@ class ConfigController extends GetxController{
       DioConnect dioConnect = Get.find<DioConnect>();
       configModel = await _configRepository.getConfiguration();
       connectionType.value = configModel.connectionType;
-      dioConnect.setDioData(baseUrl: configModel.baseUrl);
+      dioConnect.setDioData(baseUrl: configModel.connectionType.name + configModel.baseUrl);
     }
     catch(e){
       rethrow;
     }
-
   }
+  Future<PlatformFile> pickLogoImage()async{
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    );
+    if(result == null){
+      throw CustomException(message: 'Nenhum arquivo selecionado');
+    }
+    return result.files.single;
+  }
+
 
   @override
   void onInit() {

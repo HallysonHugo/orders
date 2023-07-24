@@ -9,7 +9,7 @@ class CustomException implements Exception {
 
 
   factory CustomException.fromDioError(DioError dioError) {
-    _getHttpErrorDescription(DioError dioError) {
+    getHttpErrorDescription(DioError dioError) {
       switch (dioError.response!.statusCode) {
         case 400:
           return "Não foi possível processar sua requisição.";
@@ -24,7 +24,7 @@ class CustomException implements Exception {
       }
     }
 
-    _getDioErrorDescription(DioError dioError) {
+    getDioErrorDescription(DioError dioError) {
       switch (dioError.type) {
         case DioErrorType.connectTimeout:
           return "Não foi possível se conectar à API. Verifique sua conexão";
@@ -36,16 +36,16 @@ class CustomException implements Exception {
           return "A requisição foi cancelada.\nTente novamente.";
         default:
           if (dioError.response != null) {
-            return _getHttpErrorDescription(dioError);
+            return getHttpErrorDescription(dioError);
           }
-          return "Erro desconhecido.\n" + dioError.message;
+          return "Erro desconhecido.\n${dioError.message}";
       }
     }
 
     if (dioError.response == null) {
-      return CustomException(message: _getDioErrorDescription(dioError));
+      return CustomException(message: getDioErrorDescription(dioError));
     } else {
-      return CustomException(message: _getHttpErrorDescription(dioError));
+      return CustomException(message: getHttpErrorDescription(dioError));
     }
   }
 

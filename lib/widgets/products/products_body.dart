@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:sport_bar/modules/produtos/controller/produtos_controller.dart';
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
 import 'package:sport_bar/services/errors/exeption.dart';
@@ -69,20 +68,20 @@ class ProductsBody extends StatelessWidget {
    
   }
 
-  _loadingBody(){
-    return  Center(child: Shimmer.fromColors(
-      baseColor: Colors.grey,
-      highlightColor: Colors.white,
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 5
-        ),
-        itemCount: 10,
-        itemBuilder: (context, index) => Container(
-          color: Colors.red,
-        ),
-      ),));
-  }
+  // _loadingBody(){
+  //   return  Center(child: Shimmer.fromColors(
+  //     baseColor: Colors.grey,
+  //     highlightColor: Colors.white,
+  //     child: GridView.builder(
+  //       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+  //         maxCrossAxisExtent: 5
+  //       ),
+  //       itemCount: 10,
+  //       itemBuilder: (context, index) => Container(
+  //         color: Colors.red,
+  //       ),
+  //     ),));
+  // }
 
 
   _gridView(){

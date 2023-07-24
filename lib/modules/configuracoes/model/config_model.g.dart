@@ -27,6 +27,11 @@ const ConfigModelSchema = CollectionSchema(
       name: r'connectionType',
       type: IsarType.byte,
       enumMap: _ConfigModelconnectionTypeEnumValueMap,
+    ),
+    r'imageLogo': PropertySchema(
+      id: 2,
+      name: r'imageLogo',
+      type: IsarType.string,
     )
   },
   estimateSize: _configModelEstimateSize,
@@ -50,6 +55,7 @@ int _configModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.baseUrl.length * 3;
+  bytesCount += 3 + object.imageLogo.length * 3;
   return bytesCount;
 }
 
@@ -61,6 +67,7 @@ void _configModelSerialize(
 ) {
   writer.writeString(offsets[0], object.baseUrl);
   writer.writeByte(offsets[1], object.connectionType.index);
+  writer.writeString(offsets[2], object.imageLogo);
 }
 
 ConfigModel _configModelDeserialize(
@@ -75,6 +82,7 @@ ConfigModel _configModelDeserialize(
           reader.readByteOrNull(offsets[1])] ??
       ConnectionType.http;
   object.id = id;
+  object.imageLogo = reader.readString(offsets[2]);
   return object;
 }
 
@@ -91,6 +99,8 @@ P _configModelDeserializeProp<P>(
       return (_ConfigModelconnectionTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
           ConnectionType.http) as P;
+    case 2:
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -440,6 +450,142 @@ extension ConfigModelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imageLogo',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'imageLogo',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'imageLogo',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'imageLogo',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'imageLogo',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'imageLogo',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'imageLogo',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'imageLogo',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'imageLogo',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      imageLogoIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'imageLogo',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension ConfigModelQueryObject
@@ -472,6 +618,18 @@ extension ConfigModelQuerySortBy
       sortByConnectionTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'connectionType', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByImageLogo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageLogo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByImageLogoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageLogo', Sort.desc);
     });
   }
 }
@@ -514,6 +672,18 @@ extension ConfigModelQuerySortThenBy
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByImageLogo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageLogo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByImageLogoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'imageLogo', Sort.desc);
+    });
+  }
 }
 
 extension ConfigModelQueryWhereDistinct
@@ -528,6 +698,13 @@ extension ConfigModelQueryWhereDistinct
   QueryBuilder<ConfigModel, ConfigModel, QDistinct> distinctByConnectionType() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'connectionType');
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QDistinct> distinctByImageLogo(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'imageLogo', caseSensitive: caseSensitive);
     });
   }
 }
@@ -550,6 +727,12 @@ extension ConfigModelQueryProperty
       connectionTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'connectionType');
+    });
+  }
+
+  QueryBuilder<ConfigModel, String, QQueryOperations> imageLogoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'imageLogo');
     });
   }
 }

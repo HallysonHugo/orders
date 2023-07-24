@@ -10,6 +10,8 @@ class ConfigModel{
   String baseUrl = '';
   @enumerated
   ConnectionType connectionType = ConnectionType.http;
+
+  String imageLogo = "";
 }
 
 enum ConnectionType{

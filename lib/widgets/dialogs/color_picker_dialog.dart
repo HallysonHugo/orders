@@ -3,7 +3,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sport_bar/widgets/buttons/custom_elevatedbutton.dart';
-import 'package:sport_bar/widgets/text/custom_text.dart';
 
 class ColorPickerDialog{
   static colorPickerDialog(){

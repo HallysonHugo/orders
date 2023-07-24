@@ -34,7 +34,7 @@ class CustomDrawer extends StatelessWidget {
                 DecorationUtils.DEFAULT_VSEPARATOR,
                 DecorationUtils.DEFAULT_VSEPARATOR,
                 CustomCircledButton(icon: Icons.backup_table_rounded, text: "Produtos", onTap: (){
-                  Get.offAll(()=> ProdutosPage(),transition: Transition.noTransition);
+                  Get.offAll(()=> const ProdutosPage(),transition: Transition.noTransition);
                 }),
                 DecorationUtils.DEFAULT_VSEPARATOR,
                 DecorationUtils.DEFAULT_VSEPARATOR,

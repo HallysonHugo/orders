@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -66,7 +64,7 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
       _estoqueMinimoController.text = produtosModel.estoqueMinimo?.toString() ?? "";
       _imagePath.value = produtosModel.imagem ;
       _preco.value = produtosModel.preco.toString();
-      _descricao.value = produtosModel.descricao ?? "";
+      _descricao.value = produtosModel.descricao;
       _etiqueta.value = produtosModel.nomeEtiqueta ?? "";
       _color.value = ColorFormatterUtils.formatStringToColor(color: produtosModel.color);
     }
@@ -82,7 +80,7 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
           DecorationUtils.DEFAULT_HSEPARATOR,
           DecorationUtils.DEFAULT_HSEPARATOR,
           DecorationUtils.DEFAULT_HSEPARATOR,
-          Container(
+          SizedBox(
             height: DeviceSize.getDeviceHeight(context),
             width: DeviceSize.getDeviceWidth(context) * 0.92,
             child: Column(
@@ -150,7 +148,6 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
                                         }
                                         catch(e){
                                           produtosModel.imagem = "";
-                                          print(e);
                                         }
                                         finally{
                                           isLoading.value = false;
@@ -169,7 +166,7 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
                                         _color.value = await ColorPickerDialog.colorPickerDialog();
                                         }
                                         catch(e){
-                                          print(e.toString());
+                                          rethrow;
                                         }
                                       },
                                     ),

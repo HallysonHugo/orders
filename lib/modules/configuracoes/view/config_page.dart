@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/configuracoes/controller/config_controller.dart';
@@ -68,12 +69,21 @@ class _ConfigPageState extends State<ConfigPage> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10,),
+                    CustomElevatedButton(
+                      text: 'Buscar Logo', 
+                      onPressed: ()async{
+                        PlatformFile file = await _configController.pickLogoImage();
+                        _configController.configModel.imageLogo = file.path ?? "";
+                      }
+                    ),
+                    const SizedBox(height: 10,),
                     CustomElevatedButton(
                       text: 'Salvar', 
                       onPressed: ()async{
                         try{
                           _configController.configModel.connectionType = _configController.connectionType.value;
-                          _configController.configModel.baseUrl = _configController.configModel.connectionType.name + _ipController.text;
+                          _configController.configModel.baseUrl = _ipController.text;
                           await _configController.saveIsarConfig();
                           await _configController.getConfig();
                           await CustomDialog.sucessDialog(text: 'Configurações salvas com sucesso!');

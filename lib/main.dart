@@ -7,6 +7,7 @@ import 'package:sport_bar/modules/configuracoes/controller/config_controller.dar
 import 'package:sport_bar/modules/configuracoes/model/config_model.dart';
 import 'package:sport_bar/modules/homepage/view/homepage.dart';
 import 'package:sport_bar/services/dio_connect.dart';
+import 'package:sport_bar/utils/custom_theme.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +20,22 @@ void main()async {
   directory: dir.path,
   );
   Get.put(ConfigController());
-  runApp(
-    GetMaterialApp(
+  runApp(const AppWidget());
+}
+
+
+class AppWidget extends StatefulWidget {
+  const AppWidget({super.key});
+
+  @override
+  State<AppWidget> createState() => _AppWidgetState();
+}
+
+class _AppWidgetState extends State<AppWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+    theme: CustomThemeData.themeData(context),
     builder: (BuildContext context, Widget? child) {
       return ResponsiveWrapper.builder(
         child,
@@ -37,6 +52,7 @@ void main()async {
     },
     debugShowCheckedModeBanner: false,
     home: const HomePage()
-  ));
+  );
+  }
 }
 
