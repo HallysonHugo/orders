@@ -8,6 +8,20 @@ class VendasController extends GetxController {
   RxBool isLoading = false.obs;
   RxList<ItVendas> itensVenda = <ItVendas>[].obs;
 
+
+  Future<List<VendasModel>> getVendas({DateTime? dataInicial, DateTime? dataFinal})async{
+    try{
+      
+      final List<VendasModel> vendas = await _vendasRepository.getVendas(
+        dataInicial: dataInicial ?? DateTime.now(), 
+        dataFinal: dataFinal ?? DateTime.now());
+      return vendas;
+    }
+    catch(e){
+      rethrow;
+    }
+  }
+
   void addItensVenda({required ItVendas itVendas}){
     ItVendas? item = itensVenda.firstWhereOrNull((element) => element.produtosModel.id == itVendas.produtosModel.id);
     if(item == null){

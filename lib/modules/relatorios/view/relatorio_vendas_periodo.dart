@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:sport_bar/modules/relatorios/model/relatorios_model.dart';
 import 'package:sport_bar/modules/vendas/model/vendas_model.dart';
 import 'package:sport_bar/utils/extensions.dart';
 
 class RelatorioVendasPeriodo extends StatelessWidget {
-  final List<VendasModel> vendasModel;
-  const RelatorioVendasPeriodo({super.key, required this.vendasModel});
+  final RelatoriosModel<VendasModel> relatoriosModel;
+  const RelatorioVendasPeriodo({super.key, required this.relatoriosModel});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PdfPreview(
         pdfFileName: 'Vendas por Periodo.pdf',
-        build: (format) => _generatePdf(format: format, title:  'Relatorio de Vendas por Periodo',),
+        build: (format) => _generatePdf(format: format, title:  'Relatorio de Vendas por Periodo ${relatoriosModel.dataInicial} a ${relatoriosModel.dataFinal}',),
       ),
     );
   }
@@ -24,7 +25,7 @@ class RelatorioVendasPeriodo extends StatelessWidget {
   Future<Uint8List> _generatePdf({required PdfPageFormat format, required String title})async{
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true, author: 'Hallyson Hugo', title: title);
     final font = await PdfGoogleFonts.ralewayBlack();
-    double valorTotal = vendasModel.fold(0, (previousValue, element) => previousValue + element.valorPago);
+    double valorTotal = relatoriosModel.dados.fold(0, (previousValue, element) => previousValue + element.valorPago);
     pdf.addPage(
       pw.MultiPage(
         pageFormat: format,
@@ -40,7 +41,7 @@ class RelatorioVendasPeriodo extends StatelessWidget {
                 ),
                 pw.Divider(),
                 pw.SizedBox(height: 20),
-                ...vendasModel.map((venda){
+                ...relatoriosModel.dados.map((venda){
                   return pw.Container(
                     decoration: pw.BoxDecoration(
                       border: pw.Border.all(color: PdfColors.black),
@@ -60,7 +61,7 @@ class RelatorioVendasPeriodo extends StatelessWidget {
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
                     pw.Text('Valor Total: ${valorTotal.toCurrency()}'),
-                    pw.Text('Quantidade de Vendas: ${vendasModel.length}')
+                    pw.Text('Quantidade de Vendas: ${relatoriosModel.dados.length}')
                   ]
                 )
               ]

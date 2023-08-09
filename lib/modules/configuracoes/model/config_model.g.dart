@@ -32,6 +32,11 @@ const ConfigModelSchema = CollectionSchema(
       id: 2,
       name: r'imageLogo',
       type: IsarType.string,
+    ),
+    r'useLocalIp': PropertySchema(
+      id: 3,
+      name: r'useLocalIp',
+      type: IsarType.bool,
     )
   },
   estimateSize: _configModelEstimateSize,
@@ -68,6 +73,7 @@ void _configModelSerialize(
   writer.writeString(offsets[0], object.baseUrl);
   writer.writeByte(offsets[1], object.connectionType.index);
   writer.writeString(offsets[2], object.imageLogo);
+  writer.writeBool(offsets[3], object.useLocalIp);
 }
 
 ConfigModel _configModelDeserialize(
@@ -83,6 +89,7 @@ ConfigModel _configModelDeserialize(
       ConnectionType.http;
   object.id = id;
   object.imageLogo = reader.readString(offsets[2]);
+  object.useLocalIp = reader.readBool(offsets[3]);
   return object;
 }
 
@@ -101,6 +108,8 @@ P _configModelDeserializeProp<P>(
           ConnectionType.http) as P;
     case 2:
       return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -586,6 +595,16 @@ extension ConfigModelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      useLocalIpEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'useLocalIp',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension ConfigModelQueryObject
@@ -630,6 +649,18 @@ extension ConfigModelQuerySortBy
   QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByImageLogoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'imageLogo', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByUseLocalIp() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'useLocalIp', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByUseLocalIpDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'useLocalIp', Sort.desc);
     });
   }
 }
@@ -684,6 +715,18 @@ extension ConfigModelQuerySortThenBy
       return query.addSortBy(r'imageLogo', Sort.desc);
     });
   }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByUseLocalIp() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'useLocalIp', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByUseLocalIpDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'useLocalIp', Sort.desc);
+    });
+  }
 }
 
 extension ConfigModelQueryWhereDistinct
@@ -705,6 +748,12 @@ extension ConfigModelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'imageLogo', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QDistinct> distinctByUseLocalIp() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'useLocalIp');
     });
   }
 }
@@ -733,6 +782,12 @@ extension ConfigModelQueryProperty
   QueryBuilder<ConfigModel, String, QQueryOperations> imageLogoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'imageLogo');
+    });
+  }
+
+  QueryBuilder<ConfigModel, bool, QQueryOperations> useLocalIpProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'useLocalIp');
     });
   }
 }

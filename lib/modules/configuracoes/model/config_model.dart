@@ -14,6 +14,8 @@ class ConfigModel{
   @enumerated
   ConnectionType connectionType = ConnectionType.http;
 
+  bool useLocalIp = false;
+
   String imageLogo = "";
 }
 

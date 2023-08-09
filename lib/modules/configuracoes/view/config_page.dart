@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/configuracoes/controller/config_controller.dart';
 import 'package:sport_bar/modules/configuracoes/model/config_model.dart';
+import 'package:sport_bar/services/errors/exeption.dart';
 import 'package:sport_bar/widgets/buttons/custom_elevatedbutton.dart';
 import 'package:sport_bar/widgets/dialogs/custom_dialog.dart';
 import 'package:sport_bar/widgets/drawer.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 
 class ConfigPage extends StatefulWidget {
@@ -42,32 +44,53 @@ class _ConfigPageState extends State<ConfigPage> {
                     Container(
                       margin: const EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width * 0.5,
-                      child: TextField(
-                        controller: _ipController,
-                        decoration:  InputDecoration(
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Obx(() {
-                              return DropdownButtonHideUnderline(
-                                child: DropdownButton<ConnectionType>(
-                                  value: _configController.connectionType.value,
-                                  items: [
-                                    DropdownMenuItem(value: ConnectionType.http, child: Text(ConnectionType.http.name)),
-                                    DropdownMenuItem(value: ConnectionType.https, child: Text(ConnectionType.https.name)),
-                                  ], 
-                                  onChanged: (value){
-                                    _configController.connectionType.value = value ?? ConnectionType.http;
-                                  }
-                                ),
-                              );
-                            }
-                           ),
-                          ),
-                          labelText: "IP Servidor",
-                          hintText: "IP Servidor",
-                          border: const OutlineInputBorder(),
-                        ),
+                      child: Obx(() {
+                          return TextField(
+                            enabled: !_configController.useLocalIp.value,
+                            controller: _ipController,
+                            decoration:  InputDecoration(
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Obx(() {
+                                  return DropdownButtonHideUnderline(
+                                    child: DropdownButton<ConnectionType>(
+                                      value: _configController.connectionType.value,
+                                      items: [
+                                        DropdownMenuItem(value: ConnectionType.http, child: Text(ConnectionType.http.name)),
+                                        DropdownMenuItem(value: ConnectionType.https, child: Text(ConnectionType.https.name)),
+                                      ], 
+                                      onChanged: (value){
+                                        _configController.connectionType.value = value ?? ConnectionType.http;
+                                      }
+                                    ),
+                                  );
+                                }
+                               ),
+                              ),
+                              labelText: "IP Servidor",
+                              hintText: "IP Servidor",
+                              border: const OutlineInputBorder(),
+                            ),
+                          );
+                        }
                       ),
+                    ),
+                    const SizedBox(height: 10,),
+                    Obx(() {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Usar IP Local'),
+                            Checkbox(
+                              activeColor: Colors.greenAccent[400],
+                              value: _configController.useLocalIp.value, 
+                              onChanged: (value){
+                                _configController.useLocalIp.value = value ?? false;
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 10,),
                     CustomElevatedButton(
@@ -78,12 +101,24 @@ class _ConfigPageState extends State<ConfigPage> {
                       }
                     ),
                     const SizedBox(height: 10,),
+
                     CustomElevatedButton(
                       text: 'Salvar', 
                       onPressed: ()async{
                         try{
-                          _configController.configModel.connectionType = _configController.connectionType.value;
-                          _configController.configModel.baseUrl = _ipController.text;
+                          _configController.configModel.useLocalIp = _configController.useLocalIp.value;
+                          if(_configController.useLocalIp.value){
+                            _configController.configModel.connectionType = ConnectionType.http;
+                            String? ip = await NetworkInfo().getWifiIP();
+                            if(ip == null){
+                              throw CustomException(message: 'Nenhum IP encontrado');
+                            }
+                            _configController.configModel.baseUrl = ip;
+                          }
+                          else{
+                            _configController.configModel.connectionType = _configController.connectionType.value;
+                            _configController.configModel.baseUrl = _ipController.text;
+                          }
                           await _configController.saveIsarConfig();
                           await _configController.getConfig();
                           await CustomDialog.sucessDialog(text: 'Configurações salvas com sucesso!');
