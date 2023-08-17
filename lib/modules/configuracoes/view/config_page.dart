@@ -19,11 +19,13 @@ class ConfigPage extends StatefulWidget {
 
 class _ConfigPageState extends State<ConfigPage> {
   final TextEditingController _ipController = TextEditingController();
+  final TextEditingController _portaController = TextEditingController();
   final ConfigController _configController = Get.find();
 
   @override
   void initState() {
     _ipController.text = _configController.configModel.baseUrl;
+    _portaController.text = _configController.configModel.porta.toString();
     super.initState();
   }
 
@@ -44,35 +46,53 @@ class _ConfigPageState extends State<ConfigPage> {
                     Container(
                       margin: const EdgeInsets.all(10),
                       width: MediaQuery.of(context).size.width * 0.5,
-                      child: Obx(() {
-                          return TextField(
-                            enabled: !_configController.useLocalIp.value,
-                            controller: _ipController,
-                            decoration:  InputDecoration(
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Obx(() {
-                                  return DropdownButtonHideUnderline(
-                                    child: DropdownButton<ConnectionType>(
-                                      value: _configController.connectionType.value,
-                                      items: [
-                                        DropdownMenuItem(value: ConnectionType.http, child: Text(ConnectionType.http.name)),
-                                        DropdownMenuItem(value: ConnectionType.https, child: Text(ConnectionType.https.name)),
-                                      ], 
-                                      onChanged: (value){
-                                        _configController.connectionType.value = value ?? ConnectionType.http;
-                                      }
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Obx(() {
+                              return TextField(
+                                enabled: !_configController.useLocalIp.value,
+                                controller: _ipController,
+                                decoration:  InputDecoration(
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                    child: Obx(() {
+                                      return DropdownButtonHideUnderline(
+                                        child: DropdownButton<ConnectionType>(
+                                          value: _configController.connectionType.value,
+                                          items: [
+                                            DropdownMenuItem(value: ConnectionType.http, child: Text(ConnectionType.http.name)),
+                                            DropdownMenuItem(value: ConnectionType.https, child: Text(ConnectionType.https.name)),
+                                          ], 
+                                          onChanged: (value){
+                                            _configController.connectionType.value = value ?? ConnectionType.http;
+                                          }
+                                        ),
+                                      );
+                                    }
                                     ),
-                                  );
-                                }
-                               ),
-                              ),
-                              labelText: "IP Servidor",
-                              hintText: "IP Servidor",
-                              border: const OutlineInputBorder(),
+                                  ),
+                                  labelText: "IP Servidor",
+                                  hintText: "IP Servidor",
+                                  border: const OutlineInputBorder(),
+                                ),
+                              );
+                              }
                             ),
-                          );
-                        }
+                          ),
+                          const SizedBox(width: 10,),
+                          SizedBox(
+                            width: 100,
+                            child: TextField(
+                              controller: _portaController,
+                              decoration:  const InputDecoration(
+                                labelText: "Porta",
+                                hintText: "Porta",
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          )   
+                        ],
                       ),
                     ),
                     const SizedBox(height: 10,),
@@ -114,10 +134,12 @@ class _ConfigPageState extends State<ConfigPage> {
                               throw CustomException(message: 'Nenhum IP encontrado');
                             }
                             _configController.configModel.baseUrl = ip;
+                            _configController.configModel.porta = _portaController.text;
                           }
                           else{
                             _configController.configModel.connectionType = _configController.connectionType.value;
                             _configController.configModel.baseUrl = _ipController.text;
+                            _configController.configModel.porta = _portaController.text;
                           }
                           await _configController.saveIsarConfig();
                           await _configController.getConfig();

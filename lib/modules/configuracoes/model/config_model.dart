@@ -10,6 +10,8 @@ class ConfigModel{
   Id id = Isar.autoIncrement;
   
   String baseUrl = '';
+
+  String porta = '3000';
   
   @enumerated
   ConnectionType connectionType = ConnectionType.http;

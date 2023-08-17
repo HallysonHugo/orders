@@ -23,9 +23,16 @@ class CategoryController extends GetxController{
 
   Future<void> createCategory({required CategoryModel category})async{
     await _categoryRepository.createCategory(category: category);
+    getCategory(search: '');
   }
 
   Future<void> editCategory({required CategoryModel category})async{
     await _categoryRepository.editCategory(category: category);
+    getCategory(search: '');
+  }
+
+  Future<void> deleteCategory({required CategoryModel category})async{
+    await _categoryRepository.deleteCategory(category: category);
+    getCategory(search: '');
   }
 }

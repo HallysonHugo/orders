@@ -40,4 +40,12 @@ class CategoryRepository{
       throw CustomException.fromDioError(e);
     }
   }
+  Future<void> deleteCategory({required CategoryModel category})async{
+    try{
+      await _dio.delete("/categorias/${category.id}");
+    }
+    on DioError catch(e){
+      throw CustomException.fromDioError(e);
+    }
+  }
 }

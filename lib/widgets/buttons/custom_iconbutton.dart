@@ -9,37 +9,37 @@ class CustomIconButton extends StatelessWidget {
   final String? text;
   final Color? color;
   final IconData? icon;
-  final RxBool isLoading;
-  const CustomIconButton({super.key, this.onTap, this.text, this.color, this.icon, required this.isLoading});
+  final RxBool? isLoading;
+  const CustomIconButton({super.key, this.onTap, this.text, this.color, this.icon, this.isLoading});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-              borderRadius: BorderRadius.circular(20),
-              onTap: isLoading.value == true ? null : onTap,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                alignment: Alignment.center,
-                child: Obx((){
-                  if(isLoading.value == true){
-                    return Row(
-                      children: [
-                        Lottie.asset('assets/animations/loading.json', width: 30, height: 30),
-                        const CustomText(text: "Carregando", fontSize: 18, color: Colors.grey),
-                      ],
-                    );
-                  }else{
-                    return Row(
-                      children: [
-                      Icon(
-                        icon, color: color ?? Colors.greenAccent[400], size: 30,),
-                        DecorationUtils.DEFAULT_HSEPARATOR,
-                        CustomText(text: text ?? "", fontSize: 18, color: Colors.grey),
-                      ],
-                    );
-                  }
-                }),
-              ),
+      borderRadius: BorderRadius.circular(20),
+      onTap: isLoading?.value == true ? null : onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        alignment: Alignment.center,
+        child: Obx((){
+          if(isLoading?.value  ?? false){
+            return Row(
+              children: [
+                Lottie.asset('assets/animations/loading.json', width: 30, height: 30),
+                const CustomText(text: "Carregando", fontSize: 18, color: Colors.grey),
+              ],
             );
+          }else{
+            return Row(
+              children: [
+              Icon(
+                icon, color: color ?? Colors.greenAccent[400], size: 30,),
+                DecorationUtils.DEFAULT_HSEPARATOR,
+                CustomText(text: text ?? "", fontSize: 18, color: Colors.grey),
+              ],
+            );
+          }
+        }),
+      ),
+    );
   }
 }

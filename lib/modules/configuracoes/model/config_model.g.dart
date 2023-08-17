@@ -33,8 +33,13 @@ const ConfigModelSchema = CollectionSchema(
       name: r'imageLogo',
       type: IsarType.string,
     ),
-    r'useLocalIp': PropertySchema(
+    r'porta': PropertySchema(
       id: 3,
+      name: r'porta',
+      type: IsarType.string,
+    ),
+    r'useLocalIp': PropertySchema(
+      id: 4,
       name: r'useLocalIp',
       type: IsarType.bool,
     )
@@ -61,6 +66,7 @@ int _configModelEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.baseUrl.length * 3;
   bytesCount += 3 + object.imageLogo.length * 3;
+  bytesCount += 3 + object.porta.length * 3;
   return bytesCount;
 }
 
@@ -73,7 +79,8 @@ void _configModelSerialize(
   writer.writeString(offsets[0], object.baseUrl);
   writer.writeByte(offsets[1], object.connectionType.index);
   writer.writeString(offsets[2], object.imageLogo);
-  writer.writeBool(offsets[3], object.useLocalIp);
+  writer.writeString(offsets[3], object.porta);
+  writer.writeBool(offsets[4], object.useLocalIp);
 }
 
 ConfigModel _configModelDeserialize(
@@ -89,7 +96,8 @@ ConfigModel _configModelDeserialize(
       ConnectionType.http;
   object.id = id;
   object.imageLogo = reader.readString(offsets[2]);
-  object.useLocalIp = reader.readBool(offsets[3]);
+  object.porta = reader.readString(offsets[3]);
+  object.useLocalIp = reader.readBool(offsets[4]);
   return object;
 }
 
@@ -109,6 +117,8 @@ P _configModelDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -596,6 +606,138 @@ extension ConfigModelQueryFilter
     });
   }
 
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'porta',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      portaGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'porta',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'porta',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'porta',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'porta',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'porta',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'porta',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'porta',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition> portaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'porta',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
+      portaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'porta',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<ConfigModel, ConfigModel, QAfterFilterCondition>
       useLocalIpEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
@@ -649,6 +791,18 @@ extension ConfigModelQuerySortBy
   QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByImageLogoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'imageLogo', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByPorta() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'porta', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> sortByPortaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'porta', Sort.desc);
     });
   }
 
@@ -716,6 +870,18 @@ extension ConfigModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByPorta() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'porta', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByPortaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'porta', Sort.desc);
+    });
+  }
+
   QueryBuilder<ConfigModel, ConfigModel, QAfterSortBy> thenByUseLocalIp() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'useLocalIp', Sort.asc);
@@ -751,6 +917,13 @@ extension ConfigModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ConfigModel, ConfigModel, QDistinct> distinctByPorta(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'porta', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<ConfigModel, ConfigModel, QDistinct> distinctByUseLocalIp() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'useLocalIp');
@@ -782,6 +955,12 @@ extension ConfigModelQueryProperty
   QueryBuilder<ConfigModel, String, QQueryOperations> imageLogoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'imageLogo');
+    });
+  }
+
+  QueryBuilder<ConfigModel, String, QQueryOperations> portaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'porta');
     });
   }
 

@@ -31,10 +31,9 @@ class ConfigController extends GetxController{
       if(useLocalIp.value){
         connectionType.value = ConnectionType.http;
         configModel.baseUrl = await NetworkInfo().getWifiIP() ?? "";
-        return;
       }
       connectionType.value = configModel.connectionType;
-      dioConnect.setDioData(baseUrl: configModel.connectionType.name + configModel.baseUrl);
+      dioConnect.setDioData(baseUrl: '${configModel.connectionType.name}${configModel.baseUrl}:${configModel.porta}');
     }
     catch(e){
       rethrow;

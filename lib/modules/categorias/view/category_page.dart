@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/categorias/controller/category_controller.dart';
 import 'package:sport_bar/modules/categorias/model/category_model.dart';
+import 'package:sport_bar/modules/categorias/view/add_category_page.dart';
 import 'package:sport_bar/widgets/buttons/custom_elevatedbutton.dart';
+import 'package:sport_bar/widgets/header/custom_header.dart';
+import 'package:sport_bar/widgets/popupmenu/custom_popupmenu.dart';
 import 'package:sport_bar/widgets/scaffold/custom_scaffold.dart';
 import 'package:sport_bar/widgets/search_widget.dart';
 
@@ -20,14 +23,16 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CustomTextField(
-            hintText: "Pesquisar Categoria",
-            controller: _searchController,
-          ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: 400,
+            child: CustomHeader(
+              searchController: _searchController, 
+              searchMargin: const EdgeInsets.symmetric(horizontal: 10),
+              onButtonTap: (){}, 
+              itemCount: _categoryControlelr.categories.value.data?.length ?? 0,
+              title: 'Categorias', 
+              buttonTitle: 'Adicionar Categoria'),
           ),
           Expanded(
             child: Obx(() {
@@ -36,13 +41,14 @@ class _CategoryPageState extends State<CategoryPage> {
                   itemBuilder: (context, index){
                     CategoryModel category = _categoryControlelr.categories.value.data?[index] ?? CategoryModel();
                     return ListTile(
-                      title: Text("Categoria ${category.descricao}}"),
-                      onTap: (){
-                        
-                      },
-                      trailing: IconButton(
-                        onPressed: (){},
-                        icon: const Icon(Icons.delete),
+                      title: Text("${category.id} - ${category.descricao}}"),
+                      trailing: CustomPopupMenuButtom(
+                        onChange: (){
+                          _categoryControlelr.editCategory(category: category);
+                        },
+                        onDelete: (){
+                          _categoryControlelr.deleteCategory(category: category);
+                        },
                       ),
                     );
                   }
@@ -52,7 +58,9 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           CustomElevatedButton(
             text: "Adicionar Categoria",
-            onPressed: (){},
+            onPressed: (){
+              Get.to(()=> const AddCategoryPage());
+            },
           ),
         ],
       )

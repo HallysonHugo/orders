@@ -11,35 +11,32 @@ class CustomTextField extends StatelessWidget {
   final bool isCurrency;
   final String? label;
   final Icon? suffixIcon;
-  const CustomTextField({super.key, this.onChanged, this.controller,  this.hintText, this.width, this.isCurrency = false, this.label, this.suffixIcon});
+  final EdgeInsetsGeometry? margin;
+  const CustomTextField({super.key, this.onChanged, this.controller,  this.hintText, this.width, this.isCurrency = false, this.label, this.suffixIcon, this.margin});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        SizedBox(
-          width: width ?? 300,
-          child: TextField(
-              inputFormatters: [
-                if(isCurrency)...[
-                  FilteringTextInputFormatter.digitsOnly,
-                  CentavosInputFormatter(moeda: true)
-                ]
-              ],
-              controller: controller,
-              onChanged: onChanged,
-              decoration:  InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))
-                ),
-                hintText: hintText,
-                label: label == null ? null : CustomText(text: label!, fontSize: 16, color: Colors.grey,),
-                suffixIcon: suffixIcon,
-              ),
+    return Container(
+      margin: margin,
+      width: width,
+      child: TextField(
+          inputFormatters: [
+            if(isCurrency)...[
+              FilteringTextInputFormatter.digitsOnly,
+              CentavosInputFormatter(moeda: true)
+            ]
+          ],
+          controller: controller,
+          onChanged: onChanged,
+          decoration:  InputDecoration(
+            border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))
             ),
-        )
-      ],
+            hintText: hintText,
+            label: label == null ? null : CustomText(text: label!, fontSize: 16, color: Colors.grey,),
+            suffixIcon: suffixIcon,
+          ),
+        ),
     );
   }
 }

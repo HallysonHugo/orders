@@ -33,7 +33,7 @@ SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   isar_flutter_libs: 43385c99864c168fadba7c9adeddc5d38838ca6a
   network_info_plus: f4fbc7877ab7b3294500d9441dfa53cd54972d05
-  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   printing: 1dd6a1fce2209ec240698e2439a4adbb9b427637
 
 PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7

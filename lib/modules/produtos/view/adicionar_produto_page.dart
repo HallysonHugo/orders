@@ -178,6 +178,7 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CustomTextField(
+                                    width: 300,
                                     label: "Nome do produto",
                                     controller: _descricaoProdutoController,
                                     onChanged: (value){
@@ -211,6 +212,7 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CustomTextField(
+                                    width: 300,
                                     label: "Nome da etiqueta",
                                     controller: _etiquetaProdutoController,
                                     onChanged: (value){
@@ -226,6 +228,7 @@ class _AdicionarProdutoState extends State<AdicionarProduto> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CustomTextField(
+                                    width: 300,
                                     label: "Preço do produto",
                                     controller: _precoProdutoController,
                                     isCurrency: true,
