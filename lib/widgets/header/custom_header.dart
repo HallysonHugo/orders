@@ -14,13 +14,14 @@ class CustomHeader extends StatelessWidget {
   final int itemCount;
   final bool canFilter;
   final bool category;
+  final bool showButton;
   final EdgeInsetsGeometry? searchMargin;
   final EdgeInsetsGeometry? filterMargin;
   final EdgeInsetsGeometry? categoryMargin;
   final Function(String)? searchOnChanged;
   
   const CustomHeader({super.key, required this.searchController, this.searchOnChanged, required this.onButtonTap, this.searchMargin, this.filterMargin, this.categoryMargin,
-    required this.itemCount, required this.title, this.canFilter = false, this.category = false, required this.buttonTitle});
+    required this.itemCount, required this.title, this.canFilter = false, this.category = false, required this.buttonTitle, this.showButton = true});
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +95,14 @@ class CustomHeader extends StatelessWidget {
                   ),
                 ],
                 //Botao que abre o modal de categorias
-                CustomElevatedButton(
-                  text: buttonTitle,
-                  onPressed: onButtonTap,
-                ),
-                DecorationUtils.DEFAULT_HSEPARATOR,
-                DecorationUtils.DEFAULT_HSEPARATOR,
+                if(showButton)...[
+                  CustomElevatedButton(
+                    text: buttonTitle,
+                    onPressed: onButtonTap,
+                  ),
+                  DecorationUtils.DEFAULT_HSEPARATOR,
+                  DecorationUtils.DEFAULT_HSEPARATOR,
+                ]
               ],
             ),
       ],

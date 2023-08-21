@@ -7,7 +7,6 @@ import 'package:sport_bar/widgets/buttons/custom_elevatedbutton.dart';
 import 'package:sport_bar/widgets/header/custom_header.dart';
 import 'package:sport_bar/widgets/popupmenu/custom_popupmenu.dart';
 import 'package:sport_bar/widgets/scaffold/custom_scaffold.dart';
-import 'package:sport_bar/widgets/search_widget.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});

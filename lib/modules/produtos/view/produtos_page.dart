@@ -6,7 +6,6 @@ import 'package:sport_bar/utils/decoration_utils.dart';
 import 'package:sport_bar/utils/size_util.dart';
 import 'package:sport_bar/widgets/buttons/custom_elevatedbutton.dart';
 import 'package:sport_bar/widgets/buttons/custom_iconbutton.dart';
-import 'package:sport_bar/widgets/drawer.dart';
 import 'package:sport_bar/widgets/products/products_body.dart';
 import 'package:sport_bar/widgets/scaffold/custom_scaffold.dart';
 import 'package:sport_bar/widgets/search_widget.dart';
