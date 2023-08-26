@@ -39,7 +39,7 @@ class ListProductCard extends StatelessWidget {
             DecorationUtils.DEFAULT_HSEPARATOR,
             DecorationUtils.DEFAULT_HSEPARATOR,
             Expanded(child: CustomText(text: product.descricao, color: Colors.black87, fontSize: 18,)),
-            Expanded(child: CustomText(text: product.categoria.id.toString(), color: Colors.black87, fontSize: 18,)),
+            Expanded(child: CustomText(text: product.categoria.nome ?? "", color: Colors.black87, fontSize: 18,)),
             Expanded(child: CustomText(
               text: DoubleFormatterUtil.doubleToString(value: product.estoque, isCurrency: false), 
               color: Colors.black87, 

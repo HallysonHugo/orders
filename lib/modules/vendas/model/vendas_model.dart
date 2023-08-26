@@ -5,7 +5,6 @@ import 'package:sport_bar/modules/vendas/model/forma_pagamento_venda_model.dart'
 class VendasModel{
   int? codigo;
   DateTime data = DateTime.now();
-  DateTime hora = DateTime.now();
   String cliente = "";
   String vendedor = "";
   CartModel carrinho = CartModel();
@@ -18,7 +17,6 @@ class VendasModel{
   VendasModel.fromJson(Map<String, dynamic> json){
     codigo = json['codigo'];
     data = DateTime.parse(json['data']);
-    hora = DateTime.parse(json['hora']);
     cliente = json['cliente'];
     vendedor = json['vendedor'];
     // carrinho.produtos = json['produtos'].map<ProdutosModel>((e) => ProdutosModel.fromJson(e)).toList();
@@ -26,13 +24,10 @@ class VendasModel{
 
   toJson(){
     return {
-      'data': data.toString(),
-      'hora': hora.toString(),
-      'cliente': cliente,
-      'vendedor': vendedor,
+      'idCliente': 1,
+      'idFuncionario': 1,
       'descontoTotal': carrinho.desconto,
       'valorTotal': carrinho.total,
-      'produtos': carrinho.produtos.map((e) => e.toJson()).toList(),
     };
   }
 }

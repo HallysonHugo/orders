@@ -24,7 +24,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   void initState() {
     if(isEditing){
       category = widget.category!;
-      _descricaoController.text = category.descricao;
+      _descricaoController.text = category.nome;
     }
     super.initState();
   }
@@ -48,7 +48,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
             if(_descricaoController.text.isEmpty){
               throw "Descrição não pode ser vazia";
             }
-            category.descricao = _descricaoController.text;
+            category.nome = _descricaoController.text;
             if(isEditing){
               await _categoryController.editCategory(category: category);
               await CustomDialog.sucessDialog(text: "Categoria alterada com sucesso");

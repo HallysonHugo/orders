@@ -9,7 +9,6 @@ class ApiProvider{
 
 class ProdutosApi{
   String get produtos => '/produtos';
-  String get search => '/produtos/search';
 }
 
 class VendasApi{

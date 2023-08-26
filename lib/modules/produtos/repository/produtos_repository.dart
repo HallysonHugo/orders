@@ -38,9 +38,11 @@ class ProdutosRepository{
   }
 
   //trazer todos os produtos
-  Future<List<ProdutosModel>>getProdutos() async{
-    try{
-      Response response = await _dioConnect.dio.get(ApiProvider.produtosApi.produtos);
+  Future<List<ProdutosModel>>getProdutos({String? search}) async{
+     try{
+      Response response = await _dioConnect.dio.get(ApiProvider.produtosApi.produtos, queryParameters: {
+        "search" : search ?? ""
+      });
       return response.data.map<ProdutosModel>((json) => ProdutosModel.fromJson(json)).toList();
     }
     on DioError catch(error){
@@ -65,21 +67,6 @@ class ProdutosRepository{
     }
   }
 
-  //trazer um produto pelo nome
-  Future<List<ProdutosModel>> searchProducts(String nome) async{
-    try{
-      Response response = await _dioConnect.dio.get(ApiProvider.produtosApi.search, queryParameters: {
-        'search': nome
-      });
-      return response.data.map<ProdutosModel>((json) => ProdutosModel.fromJson(json)).toList();
-    }
-    on DioError catch(error){
-      throw CustomException.fromDioError(error);
-    }
-    catch(e){
-      throw CustomException(message: e.toString());
-    }
-  }
 
   //trazer um produto pelo codigo
   Future<List> getProdutosByCodigo(String codigo) async{

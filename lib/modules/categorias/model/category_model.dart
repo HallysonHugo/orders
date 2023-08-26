@@ -1,16 +1,16 @@
 class CategoryModel{
   int? id;
-  String descricao = '';
+  String nome = '';
 
 
   CategoryModel();
 
   CategoryModel.fromJson(Map<String,dynamic> json){
     id = json['id'];
-    descricao = json['descricao'] ?? '';
+    nome = json['nome'] ?? '';
   }
 
   Map<String, dynamic> toJson() => {
-    "descricao": descricao
+    "nome": nome
   };
 }

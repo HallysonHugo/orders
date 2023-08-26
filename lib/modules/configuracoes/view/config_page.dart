@@ -61,8 +61,8 @@ class _ConfigPageState extends State<ConfigPage> {
                                         child: DropdownButton<ConnectionType>(
                                           value: _configController.connectionType.value,
                                           items: [
-                                            DropdownMenuItem(value: ConnectionType.http, child: Text(ConnectionType.http.name)),
-                                            DropdownMenuItem(value: ConnectionType.https, child: Text(ConnectionType.https.name)),
+                                            DropdownMenuItem(value: ConnectionType.http, child: Text(ConnectionType.http.description)),
+                                            DropdownMenuItem(value: ConnectionType.https, child: Text(ConnectionType.https.description)),
                                           ], 
                                           onChanged: (value){
                                             _configController.connectionType.value = value ?? ConnectionType.http;

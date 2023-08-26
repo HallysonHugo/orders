@@ -45,10 +45,11 @@ class VendasController extends GetxController {
 
   Future<void> setVenda() async {
     try {
+      isLoading.value = true;
       VendasModel vendasModel = VendasModel();
       vendasModel.carrinho.produtos = itensVenda; 
-      isLoading.value = true;
       await _vendasRepository.setVenda(vendasModel: vendasModel);
+      itensVenda.clear();
     } catch (e) {
       rethrow;
     } finally{

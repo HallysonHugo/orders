@@ -18,21 +18,25 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   final TextEditingController _searchController = TextEditingController();
   final CategoryController _categoryControlelr = Get.put<CategoryController>(CategoryController());
+
+
+  @override
+  void initState() {
+    _categoryControlelr.getCategory(search: _searchController.text);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Column(
         children: [
-          SizedBox(
-            height: 400,
-            child: CustomHeader(
-              searchController: _searchController, 
-              searchMargin: const EdgeInsets.symmetric(horizontal: 10),
-              onButtonTap: (){}, 
-              itemCount: _categoryControlelr.categories.value.data?.length ?? 0,
-              title: 'Categorias', 
-              buttonTitle: 'Adicionar Categoria'),
-          ),
+          CustomHeader(
+            searchController: _searchController, 
+            searchMargin: const EdgeInsets.symmetric(horizontal: 10),
+            onButtonTap: (){}, 
+            itemCount: _categoryControlelr.categories.value.data?.length ?? 0,
+            title: 'Categorias', 
+            buttonTitle: 'Adicionar Categoria'),
           Expanded(
             child: Obx(() {
                 return ListView.builder(
@@ -40,7 +44,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   itemBuilder: (context, index){
                     CategoryModel category = _categoryControlelr.categories.value.data?[index] ?? CategoryModel();
                     return ListTile(
-                      title: Text("${category.id} - ${category.descricao}}"),
+                      title: Text("${category.id} - ${category.nome}"),
                       trailing: CustomPopupMenuButtom(
                         onChange: (){
                           _categoryControlelr.editCategory(category: category);

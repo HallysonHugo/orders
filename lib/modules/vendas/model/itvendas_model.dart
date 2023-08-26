@@ -18,10 +18,10 @@ class ItVendas{
 
     toJson(){
     return {
-      'id': produtosModel.id,
+      'idProduto': produtosModel.id,
       'quantidade': quantidade,
       'desconto': desconto,
-      "precoVenda": precoVenda,
+      "valorUnitario": precoVenda,
       'total': total,
     };
   }

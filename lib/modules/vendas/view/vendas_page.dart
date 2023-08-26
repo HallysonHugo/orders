@@ -41,108 +41,110 @@ class _VendasPageState extends State<VendasPage> {
     return CustomScaffold(
       body: Column(
         children: [
-          SizedBox(
-            height: 400,
-            child: CustomHeader(
-              
-              searchMargin: const EdgeInsets.symmetric(horizontal: 10),
-              searchController: _searchController, 
-              onButtonTap: (){}, 
-              showButton: true,
-              canFilter: true,
-              category: true,
-              itemCount: _produtosController.produtos.value.data?.length ?? 0, 
-              title: 'Vendas', 
-              buttonTitle: ''
-            ),
+          CustomHeader(
+            searchMargin: const EdgeInsets.symmetric(horizontal: 10),
+            searchController: _searchController, 
+            searchOnChanged: (text){
+              _produtosController.getProdutos(search: text);
+            },
+            onButtonTap: (){}, 
+            showButton: false,
+            canFilter: true,
+            category: true,
+            itemCount: _produtosController.produtos.value.data?.length ?? 0, 
+            title: 'Produtos para venda', 
+            buttonTitle: ''
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Obx((){
-                    return CustomBody(
-                      customResponse: _produtosController.produtos.value,
-                      isGridView: true,
-                      body: GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1.5
-                        ),
-                        itemCount: _produtosController.produtos.value.data?.length ?? 0,
-                        itemBuilder: (context, index){
-                          final produto = _produtosController.produtos.value.data?[index] ?? ProdutosModel();
-                          return GridProductCard(
-                            product: produto,
-                            onTap: (){
-                              ItVendas itVendas = ItVendas();
-                              itVendas.quantidade = 1;
-                              itVendas.produtosModel = produto;
-                              _vendasController.addItensVenda(itVendas: itVendas);
-                            },
-                          );
-                        }
-                      ),
-                    );
-                  }
-                )
-              ),
-
-               Container(
-                  color: Colors.white,
-                  width: DeviceSize.getDeviceWidth(context) * 0.3,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Obx(
-                          () {
-                            return ListView.separated(
-                              separatorBuilder: (context, index) => const Divider(color: Colors.grey),
-                              itemCount: _vendasController.itensVenda.length,
-                              controller: _scrollController,
-                              itemBuilder: ((context, index) {
-                                ItVendas itVendas = _vendasController.itensVenda[index];
-                                return ProductCartCard(
-                                  onAdd: (){
-                                    _vendasController.addItensVenda(itVendas: itVendas);
-                                  },
-                                  onRemove: (){
-                                    _vendasController.removeItemVenda(itVendas: itVendas);
-                                  },
-                                  product: _vendasController.itensVenda[index],
-                                );
-                              }),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Obx((){
+                      return CustomBody(
+                        customResponse: _produtosController.produtos.value,
+                        isGridView: true,
+                        body: GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 1.5
+                          ),
+                          itemCount: _produtosController.produtos.value.data?.length ?? 0,
+                          itemBuilder: (context, index){
+                            final produto = _produtosController.produtos.value.data?[index] ?? ProdutosModel();
+                            return GridProductCard(
+                              product: produto,
+                              onTap: (){
+                                ItVendas itVendas = ItVendas();
+                                itVendas.quantidade = 1;
+                                itVendas.produtosModel = produto;
+                                _vendasController.addItensVenda(itVendas: itVendas);
+                              },
                             );
                           }
                         ),
-                      ),
-                      Obx(
-                        () {
-                          return CustomText(text: "Total: ${_vendasController.itensVenda.fold(0.0, (previousValue, element) => previousValue + element.total).toCurrency()}", 
-                          color: Colors.black87, fontSize: 18,
-                          );
-                        }
-                      ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomElevatedButton(
-                      text: 'Finalizar',
-                      onPressed: ()async{
-                        try{
-                          if(_vendasController.itensVenda.isEmpty){
-                            throw CustomException(message: "Não é possivel fechar a venda sem produtos");
-                          }
-                          await _vendasController.setVenda();
-                        }
-                        catch(e){
-                          CustomDialog.erroDialog(text: e.toString());
-                        }
-                      }),
+                      );
+                    }
                   )
-                  ],
                 ),
-              ),
-              
-            ],
+          
+                 Container(
+                    color: Colors.white,
+                    width: DeviceSize.getDeviceWidth(context) * 0.3,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Obx(
+                            () {
+                              return ListView.separated(
+                                separatorBuilder: (context, index) => const Divider(color: Colors.grey),
+                                itemCount: _vendasController.itensVenda.length,
+                                controller: _scrollController,
+                                itemBuilder: ((context, index) {
+                                  ItVendas itVendas = _vendasController.itensVenda[index];
+                                  return ProductCartCard(
+                                    onAdd: (){
+                                      _vendasController.addItensVenda(itVendas: itVendas);
+                                    },
+                                    onRemove: (){
+                                      _vendasController.removeItemVenda(itVendas: itVendas);
+                                    },
+                                    product: _vendasController.itensVenda[index],
+                                  );
+                                }),
+                              );
+                            }
+                          ),
+                        ),
+                        Obx(
+                          () {
+                            return CustomText(text: "Total: ${_vendasController.itensVenda.fold(0.0, (previousValue, element) => previousValue + element.total).toCurrency()}", 
+                            color: Colors.black87, fontSize: 18,
+                            );
+                          }
+                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomElevatedButton(
+                        text: 'Finalizar',
+                        onPressed: ()async{
+                          try{
+                            if(_vendasController.itensVenda.isEmpty){
+                              throw CustomException(message: "Não é possivel fechar a venda sem produtos");
+                            }
+                            await _vendasController.setVenda();
+                            await CustomDialog.sucessDialog(text: "Venda finalizada com sucesso");
+                          }
+                          catch(e){
+                            CustomDialog.erroDialog(text: e.toString());
+                          }
+                        }),
+                    )
+                    ],
+                  ),
+                ),
+                
+              ],
+            ),
           ),
         ],
       )

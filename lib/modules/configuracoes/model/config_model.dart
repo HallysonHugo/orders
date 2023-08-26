@@ -19,19 +19,12 @@ class ConfigModel{
   bool useLocalIp = false;
 
   String imageLogo = "";
+
 }
 
 enum ConnectionType{
-  http,
-  https
-}
-extension ConnectionTypeExtension on ConnectionType{
-  String get name{
-    switch(this){
-      case ConnectionType.http:
-        return 'http://';
-      case ConnectionType.https:
-        return 'https://';
-    }
-  }
+  http('http://'),
+  https('https://');
+  const ConnectionType(this.description);
+  final String description;
 }

@@ -116,7 +116,7 @@ class ProductsBody extends StatelessWidget {
                         DecorationUtils.DEFAULT_HSEPARATOR,
                         DecorationUtils.DEFAULT_HSEPARATOR,
                         CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,),
-                        CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,),
+                        CustomText(text: products.value.data![index].categoria.nome ?? "", color: Colors.black87, fontSize: 18,),
                         CustomText(
                           text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
                           color: Colors.black87, 
@@ -206,7 +206,7 @@ class ProductsBody extends StatelessWidget {
                         DecorationUtils.DEFAULT_HSEPARATOR,
                         DecorationUtils.DEFAULT_HSEPARATOR,
                         Expanded(child: CustomText(text: products.value.data![index].descricao, color: Colors.black87, fontSize: 18,)),
-                        Expanded(child: CustomText(text: products.value.data![index].categoria.id.toString(), color: Colors.black87, fontSize: 18,)),
+                        Expanded(child: CustomText(text: products.value.data![index].categoria.nome ?? "", color: Colors.black87, fontSize: 18,)),
                         Expanded(child: CustomText(
                           text: DoubleFormatterUtil.doubleToString(value: products.value.data![index].estoque, isCurrency: false), 
                           color: Colors.black87, 

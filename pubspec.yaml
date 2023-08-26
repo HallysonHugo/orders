@@ -52,6 +52,7 @@ dependencies:
   flutter_typeahead: ^4.6.2
   printing: ^5.11.0
   network_info_plus: ^4.0.1
+  package_info_plus: ^4.1.0
 
 dev_dependencies:
   flutter_test:

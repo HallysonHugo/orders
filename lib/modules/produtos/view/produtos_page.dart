@@ -78,11 +78,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                   controller: _searchController,
                   hintText: "Item, valor ou codigo",
                   onChanged: (text){
-                    if (text.isEmpty) {
-                      produtosController.getProdutos();
-                    } else if(text.length > 3) {
-                      produtosController.searchProducts(text);
-                    }
+                    produtosController.getProdutos(search: text);
                   },
                   suffixIcon: const Icon(Icons.search),
                 ),
@@ -151,6 +147,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                 DecorationUtils.DEFAULT_HSEPARATOR,
               ],
             ),
+            const SizedBox(height: 10,),
            const Row(
               children: [
               DecorationUtils.DEFAULT_HSEPARATOR,
@@ -184,7 +181,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
               DecorationUtils.DEFAULT_HSEPARATOR,
               ],
             ),
-
+            
             ProductsBody(
               products: produtosController.produtos, 
               listView: true.obs, 

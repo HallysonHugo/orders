@@ -26,10 +26,10 @@ class ProdutosController extends GetxController{
   }
 
 
-  getProdutos()async{
+  Future<void>getProdutos({String? search})async{
     try{
       produtos.value = CustomResponse.loading();
-      produtos.value = CustomResponse.completed(data: await _produtosRepository.getProdutos());
+      produtos.value = CustomResponse.completed(data: await _produtosRepository.getProdutos(search: search));
     }
     catch(e){
       produtos.value = CustomResponse.error(error: CustomException(message: e.toString()));
@@ -45,15 +45,6 @@ class ProdutosController extends GetxController{
     } 
   }
 
-  searchProducts(String nome)async{
-    try{
-      produtos.value = CustomResponse.loading();
-      produtos.value = CustomResponse.completed(data: await _produtosRepository.searchProducts(nome));
-    }
-    catch(e){
-      produtos.value = CustomResponse.error(error: CustomException(message: e.toString()));
-    } 
-  }
 
   ProdutosModel setProduto({required String descricao, required String nomeEtiqueta, 
   required String preco, required int categoria, required String imagem, required Color color,

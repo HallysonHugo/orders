@@ -42,6 +42,7 @@ class ProdutosModel{
     nomeEtiqueta = json['nomeEtiqueta'];
     preco = json['preco'] *1.0;
     estoque = json['estoque'] * 1.0;
+    categoria = CategoriasModel.fromJson(json['categoria']);
     imagem = json['imagem'] ?? "";
     promocao = json['promocao'] ?? false;
     isFavorite = json['isFavorite'] ?? false;
