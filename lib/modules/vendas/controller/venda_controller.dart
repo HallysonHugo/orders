@@ -2,16 +2,17 @@ import 'package:get/get.dart';
 import 'package:sport_bar/modules/vendas/model/itvendas_model.dart';
 import 'package:sport_bar/modules/vendas/model/vendas_model.dart';
 import 'package:sport_bar/modules/vendas/repository/vendas_repository.dart';
+import 'package:sport_bar/services/response.dart';
 
 class VendasController extends GetxController {
   final VendasRepository _vendasRepository = VendasRepository();
   RxBool isLoading = false.obs;
   RxList<ItVendas> itensVenda = <ItVendas>[].obs;
 
+  Rx<CustomResponse<List<VendasModel>>> listVendas = CustomResponse<List<VendasModel>>.none().obs;
 
   Future<List<VendasModel>> getVendas({DateTime? dataInicial, DateTime? dataFinal})async{
     try{
-      
       final List<VendasModel> vendas = await _vendasRepository.getVendas(
         dataInicial: dataInicial ?? DateTime.now(), 
         dataFinal: dataFinal ?? DateTime.now());
@@ -20,6 +21,11 @@ class VendasController extends GetxController {
     catch(e){
       rethrow;
     }
+  }
+
+  Future<void> getAllvendas()async{
+    throw UnimplementedError();
+    //Todo: implementar
   }
 
   void addItensVenda({required ItVendas itVendas}){
