@@ -22,8 +22,18 @@ class CustomElevatedButton extends StatelessWidget {
           color: Colors.greenAccent[400],
           borderRadius: BorderRadius.circular(10),
         ),
-        child: CustomText(
-          text:text
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: FittedBox(
+            fit:  BoxFit.fitWidth,
+            child: Row(
+              children: [
+                CustomText(
+                  text:text
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/categorias/view/category_page.dart';
+import 'package:sport_bar/modules/forma_pagamento/view/pagamento_page.dart';
 import 'package:sport_bar/modules/homepage/view/homepage.dart';
 import 'package:sport_bar/modules/produtos/view/produtos_page.dart';
 import 'package:sport_bar/modules/relatorios/view/relatorios_page.dart';
@@ -54,7 +55,7 @@ class CustomDrawer extends StatelessWidget {
                 DecorationUtils.DEFAULT_VSEPARATOR,
                 DecorationUtils.DEFAULT_VSEPARATOR,
                  CustomCircledButton(icon: Icons.payment, text: "Pagamento", onTap: (){
-                  Get.offAll(()=> const ConfigPage(),transition: Transition.noTransition);
+                  Get.offAll(()=> const PagamentoPage(),transition: Transition.noTransition);
                 }),
                  DecorationUtils.DEFAULT_VSEPARATOR,
                 DecorationUtils.DEFAULT_VSEPARATOR,

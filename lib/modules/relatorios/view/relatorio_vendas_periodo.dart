@@ -25,7 +25,7 @@ class RelatorioVendasPeriodo extends StatelessWidget {
   Future<Uint8List> _generatePdf({required PdfPageFormat format, required String title})async{
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true, author: 'Hallyson Hugo', title: title);
     final font = await PdfGoogleFonts.ralewayBlack();
-    double valorTotal = relatoriosModel.dados.fold(0, (previousValue, element) => previousValue + element.valorPago);
+    double valorTotal = relatoriosModel.dados.fold(0, (previousValue, element) => previousValue + element.formasPagamento.first.valorPago);
     pdf.addPage(
       pw.MultiPage(
         pageFormat: format,
@@ -51,7 +51,7 @@ class RelatorioVendasPeriodo extends StatelessWidget {
                       children: [
                         pw.Text('Id: ${venda.codigo}'),
                         pw.Text('Data: ${venda.data}'),
-                        pw.Text('Valor: ${venda.valorPago.toCurrency()}'),
+                        pw.Text('Valor: ${valorTotal.toCurrency()}'),
                         pw.Text('Desconto: ${venda.carrinho.desconto.toCurrency()}'),
                       ]
                     )

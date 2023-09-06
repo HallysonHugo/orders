@@ -1,4 +1,4 @@
-import 'package:sport_bar/modules/vendas/model/forma_pagamento_model.dart';
+import 'package:sport_bar/modules/forma_pagamento/model/forma_pagamento_model.dart';
 
 class FormaPagamentoVendaModel{
   int? id;
@@ -7,4 +7,12 @@ class FormaPagamentoVendaModel{
   double valorPago = 0;
   
   FormaPagamentoVendaModel();
+
+
+  toJson(){
+    return {
+      'idFormaPagamento': formaPagamentoModel.id,
+      'valorPago': valorPago
+    };
+  }
 }

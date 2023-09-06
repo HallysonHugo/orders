@@ -133,7 +133,7 @@ class ProductsBody extends StatelessWidget {
                             onTap: ()async{
                               try{
                                 await CustomDialog.questionDialog(
-                                  text: "Deseja realmente deletar o produto ${products.value.data![index].descricao} ?",
+                                  text: "Deseja realmente deletar o produto ${products.value.data?[index].descricao} ?",
                                   onConfirm: ()async{
                                     try{
                                       await _produtosController.deleteProduto(products.value.data![index].id!);

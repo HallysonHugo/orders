@@ -10,7 +10,6 @@ class VendasModel{
   CartModel carrinho = CartModel();
   List<FichaModel> fichas = [];
   List<FormaPagamentoVendaModel> formasPagamento = [];
-  double valorPago = 0.0;
 
   VendasModel();
 
@@ -19,13 +18,13 @@ class VendasModel{
     data = DateTime.parse(json['data']);
     cliente = json['cliente'];
     vendedor = json['vendedor'];
-    // carrinho.produtos = json['produtos'].map<ProdutosModel>((e) => ProdutosModel.fromJson(e)).toList();
   }
 
   toJson(){
     return {
       'idCliente': 1,
       'idFuncionario': 1,
+      'formaPagamento': formasPagamento.map((e) => e.toJson()).toList(),
       'descontoTotal': carrinho.desconto,
       'valorTotal': carrinho.total,
     };

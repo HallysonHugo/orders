@@ -96,9 +96,12 @@ class CustomHeader extends StatelessWidget {
                 ],
                 //Botao que abre o modal de categorias
                 if(showButton)...[
-                  CustomElevatedButton(
-                    text: buttonTitle,
-                    onPressed: onButtonTap,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: CustomElevatedButton(
+                      text: buttonTitle,
+                      onPressed: onButtonTap,
+                    ),
                   ),
                   DecorationUtils.DEFAULT_HSEPARATOR,
                   DecorationUtils.DEFAULT_HSEPARATOR,

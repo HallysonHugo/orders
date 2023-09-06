@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sport_bar/modules/vendas/controller/venda_controller.dart';
 import 'package:sport_bar/modules/vendas/model/vendas_model.dart';
-import 'package:sport_bar/utils/extensions.dart';
 import 'package:sport_bar/widgets/header/custom_header.dart';
 import 'package:sport_bar/widgets/scaffold/custom_scaffold.dart';
 
@@ -42,7 +41,7 @@ class _ListVendasState extends State<ListVendas> {
                     color: Colors.white
                   ),
                   height: 100,
-                  child: Text(vendasModel.valorPago.toBrformatted()),
+                  child: Text(vendasModel.toString()),
                 );
               },
             ),
