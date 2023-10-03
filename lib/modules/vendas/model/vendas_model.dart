@@ -10,6 +10,9 @@ class VendasModel{
   CartModel carrinho = CartModel();
   List<FichaModel> fichas = [];
   List<FormaPagamentoVendaModel> formasPagamento = [];
+  double get valorPago => formasPagamento.fold(0, (previousValue, element) => previousValue + element.valorPago);
+  bool get pago => valorPago >= carrinho.total;
+  double get troco => valorPago - carrinho.total;
 
   VendasModel();
 

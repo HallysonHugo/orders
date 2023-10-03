@@ -5,12 +5,15 @@ import 'package:sport_bar/services/dio_connect.dart';
 import 'package:sport_bar/services/errors/exeption.dart';
 
 class PagamentoRepository{
-  final DioConnect _dioConnect = Get.find<DioConnect>();
+  late final Dio _dio;
+  PagamentoRepository(){
+    _dio = Get.find<DioConnect>().dio;
+  }
 
 
   Future<List<FormaPagamentoModel>> getFormaPagamento({required String search})async{
     try{
-      final response = await _dioConnect.dio.get('/forma_pagamento', queryParameters: {
+      final response = await _dio.get('/forma_pagamento', queryParameters: {
         "search" : search
       });
       return response.data.map<FormaPagamentoModel>((json) => FormaPagamentoModel.fromJson(json)).toList();
@@ -25,7 +28,7 @@ class PagamentoRepository{
   
   Future<void> createFormaPagamento({required FormaPagamentoModel pagamentoModel})async{
     try{
-      await _dioConnect.dio.post('/forma_pagamento', data: pagamentoModel.toJson());
+      await _dio.post('/forma_pagamento', data: pagamentoModel.toJson());
     }
     on DioError catch(error){
       throw CustomException.fromDioError(error);

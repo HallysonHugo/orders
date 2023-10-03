@@ -4,6 +4,8 @@ import 'package:sport_bar/modules/produtos/controller/produtos_controller.dart';
 import 'package:sport_bar/modules/produtos/model/produtos_model.dart';
 import 'package:sport_bar/modules/vendas/controller/venda_controller.dart';
 import 'package:sport_bar/modules/vendas/model/itvendas_model.dart';
+import 'package:sport_bar/modules/vendas/model/vendas_model.dart';
+import 'package:sport_bar/modules/vendas/view/pagamento_venda_page.dart';
 import 'package:sport_bar/services/errors/exeption.dart';
 import 'package:sport_bar/utils/extensions.dart';
 import 'package:sport_bar/utils/size_util.dart';
@@ -29,6 +31,7 @@ class _VendasPageState extends State<VendasPage> {
   final _vendasController = Get.put(VendasController());
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
+  VendasModel vendasModel = VendasModel();
 
 
   @override
@@ -131,7 +134,9 @@ class _VendasPageState extends State<VendasPage> {
                             if(_vendasController.itensVenda.isEmpty){
                               throw CustomException(message: "Não é possivel fechar a venda sem produtos");
                             }
-                            await _vendasController.setVenda();
+                            vendasModel.carrinho.produtos = _vendasController.itensVenda; 
+                            await Get.to(() =>  PagamentoVenda(venda: vendasModel));
+                            await _vendasController.setVenda(vendasModel: vendasModel);
                             await CustomDialog.sucessDialog(text: "Venda finalizada com sucesso");
                           }
                           catch(e){

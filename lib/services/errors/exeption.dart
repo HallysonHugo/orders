@@ -60,10 +60,3 @@ class CustomException implements Exception {
     return message;
   }
 }
-
-class DistrictNotAttendedException implements CustomException {
-  @override
-  String message;
-
-  DistrictNotAttendedException({this.message = ''});
-}

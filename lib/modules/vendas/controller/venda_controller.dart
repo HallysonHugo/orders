@@ -49,11 +49,9 @@ class VendasController extends GetxController {
     itensVenda.refresh();
   }
 
-  Future<void> setVenda() async {
+  Future<void> setVenda({required VendasModel vendasModel}) async {
     try {
       isLoading.value = true;
-      VendasModel vendasModel = VendasModel();
-      vendasModel.carrinho.produtos = itensVenda; 
       await _vendasRepository.setVenda(vendasModel: vendasModel);
       itensVenda.clear();
     } catch (e) {
